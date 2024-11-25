@@ -6,13 +6,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-	--ifm-color-primary: #f68d2e;
-	--ifm-color-primary-dark: rgb(222, 127, 41);
-	--ifm-color-primary-darker: rgb(180, 104, 34);
-	--ifm-color-primary-darkest: rgb(133, 77, 25);
-	--ifm-color-primary-light: rgb(243, 144, 58);
-	--ifm-color-primary-lighter: rgb(245, 150, 74);
-	--ifm-color-primary-lightest: rgb(239, 165, 104);
+	--ifm-color-primary: #F0543F;
 	--ifm-code-font-size: 95%;
 }
 
@@ -23,25 +17,4 @@
 	padding: 0 var(--ifm-pre-padding);
 }
 
-html[data-theme='dark'] .docusaurus-highlight-code-line {
-	background-color: rgba(0, 0, 0, 0.3);
-}
-
-html[data-theme='light'] .featureSvg_src-components-HomepageFeatures-module {
-	fill: var(--ifm-color-primary-dark);
-}
-
-html[data-theme='dark'] .featureSvg_src-components-HomepageFeatures-module {
-	fill: var(--ifm-color-primary-lighter);
-}
-
 @import './ChordMarkBlock';
-
-.logo_homepage {
-	width: 300px !important;
-	margin: 0 auto 10px;
-}
-
-.logo_homepage img {
-	max-width: 100%;
-}

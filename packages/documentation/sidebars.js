@@ -15,11 +15,6 @@
 const sidebars = {
 	// By default, Docusaurus generates a sidebar from the docs folder structure
 	docs: [
-		{
-			type: 'category',
-			label: 'Overview',
-			items: ['overview/what-is-chordmark', 'overview/story'],
-		},
 		'getting-started',
 		{
 			type: 'category',
@@ -29,12 +24,9 @@ const sidebars = {
 				'reference/lyrics',
 				'reference/sections',
 				'reference/keys',
-				'reference/rendering',
 			],
 		},
 	],
-
-	api: ['api/intro', 'api/parser', 'api/renderer'],
 
 	// But you can create a sidebar manually
 	/*
