@@ -1,0 +1,139 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 和弦
+
+## 和弦行
+
+要创建和弦行，只需在空行上写入和弦符号，排除任何不是<CM/>语法的一部分的字符。
+
+和弦行具有以下特征：
+
+-   它们将以竖线分隔符 `|`
+-   如果后面跟着带有和弦位置标记的歌词行，则和弦将被放置在相关歌词之上
+-   如果不是，则它们将被整齐地对齐在整个歌曲中
+
+你可以在符号之间留出任意多的空格，但请知悉<CM/>将忽略这些空格，并使用其自己的算法来定位和弦。
+
+<TabbedChordMark src={'Am7 Am7/G F#m7b5 FM7\nE7   E7+ Am7   Am7+'} />
+
+如果你在一行上写入任何不是和弦符号的内容，那么它就不会被认为是和弦行，也不会从上述特征中受益。
+这同样适用于如果一个和弦符号不被识别为和弦符号的情况。
+
+<TabbedChordMark
+	src={'Extra "|" character:\nA7 | D7\nInvalid chord symbol:\nA7 D7(b9'}
+/>
+
+## 和弦时值
+
+默认的和弦持续时间是整个小节，即4拍。
+如果你想让和弦持续时间更短，你需要指定它应该持续多长时间，方法是写入符号后面的点 `.`。
+每拍用一个点。
+
+<TabbedChordMark src={'A7.. D7.. E7... A7.'} />
+
+上面的示例创建了两个小节：
+
+-   第一个小节有两个和弦（`A7`和`D7`），每个持续2拍
+-   第二个小节有一个和弦持续3拍（`E7`），另一个在第四拍（`A7`）。
+
+默认情况下，<CM/>只在一个小节中包含不均匀持续时间的和弦时才会渲染持续时间标记。
+如果一个小节中的所有和弦共享相同的持续时间，那么点号就不会被渲染。
+
+<TabbedChordMark
+	src={
+		'Invalid beat count:\nA7... D7..\nIf a chord spans multiple bar, specify it for each bar:\nA7.. D7.... E7..\nA7.. D7.. D7.. E7..'
+	}
+/>
+
+## 子拍和弦持续时间
+
+如果一些和弦持续时间小于一拍，你可以使用子拍分隔符来创建在同一个拍中演奏的一组和弦。
+
+<TabbedChordMark
+	src={
+		'C.. G..\nWhen I _find myself in _times of trouble\nAm. [Am Am/G] FM7. F6.\n_ Mother _Ma_ry _comes to _me'
+	}
+/>
+
+在子拍分隔符内，不是使用和弦持续时间标记，而是根据分组中的和弦数量来定义和弦持续时间，这意味着不需要使用和弦持续时间标记：
+
+<TabbedChordMark
+	src={
+		'8th notes:\nC.. G. [Am Am/G]\n8th notes triplet:\nC.. G. [Am Am/G F]\n16th notes:\nC.. G. [Am Am/G F C]'
+	}
+/>
+
+如果一个子拍分隔符包含和弦持续时间标记、单个和弦或超过四个和弦，则该分隔符定义无效：
+
+<TabbedChordMark
+	src={'Invalid:\nC.. G. [B. A7.]\nC.. G. [B]\nC.. G. [B C/E Am G F]'}
+/>
+
+## 拍号
+
+如果你的歌曲不是4/4拍的，你可以简单地指定时间签名在一个单独的行上。
+
+<TabbedChordMark src={'3/4\nDm Gm.. C.'} />
+
+你可以在一首歌曲中混合使用多个拍号。
+
+<TabbedChordMark
+	src={'3/4\nDm Gm.. C.\n\n4/4\nA7.. D7.. E7... A7.\n\n5/4\nGm... C. Dm7.'}
+/>
+
+最常用的时间签名被<CM/>识别。
+
+你也可以在和弦行内声明时间签名的变化。
+新的时间签名将持续到一个新的时间签名被声明在同一行上，或者直到行的结束。
+
+<TabbedChordMark
+	src={
+		"4/4\n#i\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!\n\n#v\n5/4 A... G.. G... A..\n_Nothing to do to _save his life, _call his wife _in,\n5/4 A... G.. 3/4 G 4/4 A\n_Nothing to say, but, \"_What a day! _How's your boy _been?\"\n5/4 D 4/4 E.. E7..\n_Nothing to do, it's up to _you,\n3/4 A G\nI've got _nothing to say, but _it's okay,\n\n#c\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!"
+	}
+/>
+
+如果时间签名的变化发生在段落变化之前，无论是在新段落直接声明还是在段落标签前一行声明，以避免在使用自动和弦重复功能时它会被重复应用于前一个段落。
+
+## 重复小节
+
+你可以使用 `%` 符号来重复当前行上最后声明的小节。
+
+<TabbedChordMark src={'A7 %%%\nD7 % A7 %\nE7 D7 A7 %'} />
+
+无论何时可能，<CM/>都会渲染重复的小节，甚至它们没有被明确指定为重复的。
+
+<TabbedChordMark src={'A7.. D7.. %\nD7.. E7. A7. D7.. E7. A7.'} />
+
+## 重复和弦行
+
+当单独使用在给定的行上时， `%` 字符会指示<CM/>重复最后声明的和弦行。
+
+<TabbedChordMark src={'A7 D7\n%'} />
+
+你可以使用 `%%` 回到上一个声明的和弦行，并重复它：
+
+<TabbedChordMark src={'A7 D7\nE7 A7\n%%\n%'} />
+
+## 重复整个段落
+
+请查看段落标签文档，了解如何重复给定段落中定义的所有和弦。
+
+## 无和弦
+
+如果在给定的时刻不应该演奏任何和弦，就使用特殊的 `NC` 符号
+
+<TabbedChordMark src={'NC Am Dm7'} />
+
+## 和弦符号标准化
+
+为了更一致，<CM/> 在渲染时标准化和弦符号。
+
+<TabbedChordMark src={'CMAJ7\nC^\nCM7\nCΔ\nCmajor7'} />
+
+在幕后，<CM/> 使用强大的 <CS/> 库，该库能够解析几乎任何和弦符号
+并基于[广泛认可的惯例](https://github.com/no-chris/chord-symbol/tree/master/packages/chord-symbol#background-information)进行标准化。
+
+这种标准化也可以有时加速写作过程：
+
+<TabbedChordMark src={'Dm7(b5)\nDh'} />

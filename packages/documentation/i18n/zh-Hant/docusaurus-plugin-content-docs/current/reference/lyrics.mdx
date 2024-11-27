@@ -1,0 +1,59 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 歌詞
+
+## 歌詞行
+
+任何不是和弦行的行都是歌詞行，除了少數例外，如節拍標記或段落聲明。
+
+<TabbedChordMark src={'一行帶有任意內容的歌詞'} />
+
+歌詞行除了包含和弦位置標記時，不會顯示任何特殊行為。
+
+## 和弦位置標記
+
+可以使用 `_` 字符指定前一個和弦行的和弦應該在哪裡演奏。
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7\n_A lyric line _with positioned _chords\n\n%\n\n_Another one _without an immediatly preceding _chord line'
+	}
+/>
+
+如果歌詞行不包含任何位置標記，那麼和弦將與其他和弦行對齊：
+
+<TabbedChordMark
+	src={'A7 E7.. E7+..\nBm7.. E7.. A7\n不帶定位的歌詞行'}
+/>
+
+如果歌詞行有比和弦更多的位置標記，那麼額外的將被忽略。
+如果它有更少，那麼剩余的和弦將顯示在行的末尾：
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7 Bm7.. E7.. A7\n_帶有太多定位標記的歌詞 _行\n%\n_另一個 _帶有太少定位標記的'
+	}
+/>
+
+## 跨多小節的和弦
+
+这是少數幾種情況之一，寫作歌曲時在 <CM/> 中實際需要比其他格式多做一些工作。
+如果同一個和弦在多個小節中演奏，你將需要為每個小節添加一個位置標記。
+這種（最小的）額外努力將導致歌詞定位的清晰度提高。
+
+<TabbedChordMark
+	src={"A7 %%\nYou don't have to be _beautiful _ to turn me _on "}
+/>
+
+## 强制歌詞行
+
+有少數幾種情況，<CM/> 可能會將歌詞行解釋為和弦行。
+當這種情況發生時，你可以通過在行首添加 `:` 符號來強制檢測為歌詞。
+
+<TabbedChordMark src={'Ah Ah Ah\n:Ah Ah Ah\nFish\n:Fish'} />
+
+注意，你也可以添加任何其他字符到行首來強制歌詞檢測。
+唯一的區別是，`: ` 將在渲染時被隱藏。
+
+<TabbedChordMark src={'Ah\nAh!\n:Ah'} />

@@ -1,0 +1,89 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 調
+
+## 調聲明行
+
+可以使用 `key` 關鍵字來聲明歌曲任何部分的調：
+
+<TabbedChordMark src={'key C\nC F G C'} />
+
+如果在節奏變化前發生調的變化，无論是直接在新段落中聲明，还是在段落標籤的前一行聲明，以避免在使用自動和弦重複功能時，調會被重複應用於前一個段落。
+
+除了為和弦譜的讀者帶來清晰度外，聲明一個或多個調至少會帶來3個好處。
+
+### 1/ 自動移調
+
+第一個好處是 - 在我看來 - <CM /> 的一個非常酷的特性之一！
+無論何時在歌曲中發生調的變化，並且當使用段落之間的自動和弦重複時，<CM /> 都會根據新的調聲明自動移調重複的和弦。
+見下面的示例：
+
+<TabbedChordMark
+	src={
+		'key C\n#v\nDm7 G7 C %\n第一段主歌在C調\n\nkey G\n#v\n第二段在G調！'
+	}
+/>
+
+從哪個調進行移調的基礎鍵總是第一个明確聲明的調，所以一定要在第一行和弦之前定義一個調。
+
+### 2/ 臨時升降號的正確渲染
+
+第二個好處與臨時升降號（`#` 和 `b`）的渲染有關。
+如果你的源文件包含混合的臨時升降號，那麼聲明一個調將允許 <CM/> 自動標準化臨時升降號，選擇合適的符號
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _'
+	}
+/>
+
+注意，如果你不聲明一個調，<CM/> 將嘗試根據歌曲中使用的和弦自動檢測調。
+雖然這應該對簡單的歌曲工作得很好，但對於更複雜的情況，它可能會失敗。
+因此，作為最佳實踐，總是明確聲明一個調。
+
+如果歌曲包含多個鍵，臨時升降號也會被正確選擇：
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+/>
+
+當在 `auto` 模式下移調時，<CM/> 會嘗試變得聰明，避免使用實際上不用的[理論調](https://en.wikipedia.org/wiki/Theoretical_key)。
+例如，降調 `Layla` 一半音將結果為C#m調，而不是Dbm調的合唱。再次注意，對於每個調，合適的臨時升降號都是使用的。
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+	options={{ transposeValue: -1 }}
+/>
+
+### 3/ 和聲分析
+
+使用調的第三個好處在於 <CM/> 能夠通過渲染和弦符號為[羅馬數字符號](https://en.wikipedia.org/wiki/Roman_numeral_analysis)來幫助和聲分析。
+這只能在明確設定鍵的情況下完成，否則所有符號將被渲染為 `I`、`i` 或 `?`。
+將和弦從音符轉換為數字符號的方法非常基本和簡單：基於聲明的調，<CM/> 只會檢測歌曲的和弦是否與調是同音的，
+或是否與平行大調/小調鍵是同音的（例如“借用”的和弦）。
+當然，和聲分析遠遠不止於這個簡單的方法，我希望在未來為 <CM/> 增加更多的功能。
+
+<TabbedChordMark
+	src={
+		'key Em\n6/8\nEm D. C.\n_ Forever trusting _who we are\nG.  B7. Em %\n_ and _nothing else _matters'
+	}
+	options={{ symbolType: 'roman' }}
+/>
+
+請注意：
+
+-   與調同音的符號會以顏色背景渲染
+-   借用的和弦會以稍微暗一些的背景渲染
+-   未識別的和弦會沒有背景顏色渲染
+
+<TabbedChordMark
+	src={'key C\nC/E Dm7/F Fm Gm Ab7'}
+	options={{ symbolType: 'roman' }}
+/>
+
+如果你不確定調，就試試幾個調吧！你將能夠立即看到這首歌是否有很多這個調的全音階和弦。如果是這樣，那麼給定的調可能是一個合適的。

@@ -1,0 +1,63 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+import data from '../../../../../docs/reference/sections-data';
+
+# 段落
+
+## 段落聲明行
+
+段落是一首歌中的獨立部分，如前奏、主歌、副歌、獨奏等，是 <CM/> 最強大的功能的核心，如相同類型的段落之間的和弦自動重複。
+強烈建議系統地使用節標籤。
+
+## 聲明一個段落
+
+要創建一個新的段落，使用 `#` 字符後跟一個字符：
+
+<TabbedChordMark src={'#intro\n#verse\n#bridge\n#chorus\n#verse\n#chorus'} />
+
+注意，應該使用相同的段落標籤（例如 `#verse`、`#chorus`...）聲明同一類型的多個段落。 <CM/> 將自動為它們編號。
+
+段落標籤應該是一個由字母組成的單詞，大寫或小寫。 
+如果存在其他字符，如空格，則該行將被視為歌詞行，不會聲明段落。
+
+<TabbedChordMark src={'有效的標籤：\n#custom\n#mySection\n\n無效的標籤：\n#my section\n#1custom\n#custom 2'} />
+
+要結束一個段落，只需聲明一個新的段落，或者結束文件：
+
+<TabbedChordMark src={'#verse\n這是主歌 \n\n#chorus\n這是副歌'} />
+
+## 簡寫符號
+
+為了加快寫作速度，<CM/> 有一個最常用的段落名的簡寫符號。 
+這是所有可用簡寫符號的列表。強烈鼓勵使用它們：
+
+<TabbedChordMark src={'#a\n#b\n#c\n#i\n#o\n#p\n#s\n#u\n#v'} />
+
+## 重複和弦
+
+現在來看一些有趣的部分。
+一旦你為一個段落指定了和弦，它們將自動重複到下一個使用相同標籤的段落。
+即使和弦行不再存在，和弦位置標記也可以像在上面明確寫出和弦一樣定義。
+
+<TabbedChordMark src={data.repeat1} />
+
+如果在重複的段落中和弦有所不同，只需用新的和弦行覆蓋它們！
+覆蓋只應用於當前重複的段落：
+
+<TabbedChordMark src={data.repeat2} />
+
+## 重複整個段落
+
+如果一個段落的和弦和歌詞是相同的，只需寫出標籤，然後留空段落體。
+
+<TabbedChordMark src={data.repeat3} />
+
+默認情況下，將重複第一個聲明的具有該標籤的段落。你也可以通過在標籤後附加其索引來指定特定的段落：
+
+<TabbedChordMark src={data.repeat4} />
+
+## 複製一個段落
+
+如果一個段落應該連續播放多次，只需將它複製：
+
+<TabbedChordMark src={'#c x2\nE7 D7\n副歌連續播放兩次'} options={{ expandSectionMultiply: false }} />

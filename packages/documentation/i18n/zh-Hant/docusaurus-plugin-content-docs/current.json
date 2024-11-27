@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Reference": {
+    "message": "指南",
+    "description": "The label for category Reference in sidebar docs"
+  },
+  "sidebar.docs.doc.Getting started": {
+    "message": "開始上手",
+    "description": "The label for the doc item Getting started in sidebar docs, linking to the doc getting-started"
+  }
+}

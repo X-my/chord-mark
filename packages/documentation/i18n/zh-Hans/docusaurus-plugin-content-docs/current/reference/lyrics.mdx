@@ -1,0 +1,59 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 歌词
+
+## 歌词行
+
+任何不是和弦行的行都是歌词行，除了少数例外，如节拍标记或段落声明。
+
+<TabbedChordMark src={'一行带有任意内容的歌词'} />
+
+歌词行除了包含和弦位置标记时，不会显示任何特殊行为。
+
+## 和弦位置标记
+
+可以使用 `_` 字符指定前一个和弦行的和弦应该在哪里演奏。
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7\n_A lyric line _with positioned _chords\n\n%\n\n_Another one _without an immediatly preceding _chord line'
+	}
+/>
+
+如果歌词行不包含任何位置标记，那么和弦将与其他和弦行对齐：
+
+<TabbedChordMark
+	src={'A7 E7.. E7+..\nBm7.. E7.. A7\n不带定位的歌词行'}
+/>
+
+如果歌词行有比和弦更多的位置标记，那么额外的将被忽略。
+如果它有更少，那么剩余的和弦将显示在行的末尾：
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7 Bm7.. E7.. A7\n_带有太多定位标记的歌词 _行\n%\n_另一个 _带有太少定位标记的'
+	}
+/>
+
+## 跨多小节的和弦
+
+这是少数几种情况之一，写作歌曲时在 <CM/> 中实际需要比其他格式多做一些工作。
+如果同一个和弦在多个小节中演奏，你将需要为每个小节添加一个位置标记。
+这种（最小的）额外努力将导致歌词定位的清晰度提高。
+
+<TabbedChordMark
+	src={"A7 %%\nYou don't have to be _beautiful _ to turn me _on "}
+/>
+
+## 强制歌词行
+
+有少数几种情况，<CM/> 可能会将歌词行解释为和弦行。
+当这种情况发生时，你可以通过在行首添加 `:` 符号来强制检测为歌词。
+
+<TabbedChordMark src={'Ah Ah Ah\n:Ah Ah Ah\nFish\n:Fish'} />
+
+注意，你也可以添加任何其他字符到行首来强制歌词检测。
+唯一的区别是，`: ` 将在渲染时被隐藏。
+
+<TabbedChordMark src={'Ah\nAh!\n:Ah'} />

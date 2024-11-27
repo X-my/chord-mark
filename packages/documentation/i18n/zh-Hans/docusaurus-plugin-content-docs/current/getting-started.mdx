@@ -1,0 +1,87 @@
+---
+slug: /
+---
+
+import data from '../../../../docs/getting-started-data.js';
+import { CM, CCS, CS } from '../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../src/components/TabbedChordMark';
+
+# 开始上手
+
+欢迎来到<CM/> 5分钟教程，您将在这里学习格式的基础知识和其可能性！
+
+## 示例歌曲
+
+让我们来看一首示例歌曲，Leonard Cohen的Hallelujah。
+您可以在源文件（使用<CM/>编写）和渲染版本之间切换，使用选项卡。
+
+<TabbedChordMark src={data.sampleSong} />
+
+## 逐行解释
+
+让我们逐行详细解释上面的和弦谱。
+
+### 第一段主歌
+
+<TabbedChordMark src={data.sampleSong} srcLines={'1'} renderLines={'1'} />
+
+这是一个部分标签，定义了段落的开始：前奏，主歌，副歌...
+`#`是部分符号；`v`是标签`Verse`的简写。
+<CM/>将使用相同的标签自动对部分进行编号。
+
+<TabbedChordMark src={data.sampleSong} srcLines={'2-3'} renderLines={'2-3'} />
+
+第一行包含两个和弦符号，每个后面跟着2个点。这意味着每个和弦应该演奏2拍。
+由于默认的拍号是`4/4`，这一行将被渲染为一个带有2个和弦的小节。
+小节分隔符`|`会被自动添加。
+
+第二行包含了和弦上方的歌词。位置标记符号`_`用于指定每个和弦应该在哪里演奏。
+
+<TabbedChordMark src={data.sampleSong} srcLines={'4-5'} renderLines={'4-5'} />
+
+符号`%`指示<CM/>重复上一行定义的和弦行，例如第2行。
+
+尽管和弦没有明确定义，但<CM/>仍然期望歌词行中应该有两个和弦。
+
+<TabbedChordMark src={data.sampleSong} srcLines={'6-7'} renderLines={'6-7'} />
+
+第一行声明了2个带有2个和弦的小节。
+由于第一个小节的和弦持续时间不均匀（`F`为3拍，`G`为1拍），拍号指示符`.`被显式渲染。
+当一个小节中的每个和弦应该演奏相同的持续时间时，它会被省略。
+
+第二行只包含了3个和弦位置标记，对应4个和弦，因为最后一个和弦变化发生在歌词结束后。
+在这种情况下，位置标记是可选的，<CM/>会简单地在行末添加额外的和弦。
+
+<TabbedChordMark src={data.sampleSong} srcLines={'12-13'} renderLines={'12-13'} />
+
+当没有为和弦指定持续时间时，比如这里第二小节的`Am`，<CM/>会理解它应该持续整个小节，例如这里是4拍。
+
+### 第一段副歌
+
+<TabbedChordMark src={data.sampleSong} srcLines={'15-23'} renderLines={'15-23'} />
+
+`#c`使用`c`的简写标签声明了一个新的段落。
+
+### 第二段主歌
+
+<TabbedChordMark src={data.sampleSong} srcLines={'25-31'} renderLines={'25-37'} />
+
+现在这很有趣：通过第二次使用`#v`部分标签，我们指示<CM/>自动重复为第一节定义的和弦，并将其应用于当前部分。
+这意味着这次只需要和弦位置标记，而不需要和弦符号本身。
+这在编写和弦谱时节省了大量时间！
+
+请注意，<CM/>会自动对第二段主歌进行编号。
+
+### 第二段副歌
+
+<TabbedChordMark src={data.sampleSong} srcLines={'33'} renderLines={'39-47'} />
+
+由于第二段副歌与第一段相同，我们只需声明标签并留空部分内容：<CM/>会理解它应该自动重复整个部分。
+
+## 显示和弦谱
+
+现在假设您是一个乐队的贝斯手，只有和弦谱对您很重要。
+非常简单！<CM/>可以从完全相同的源文件自动渲染出一个漂亮格式的和弦谱：
+
+<TabbedChordMark src={data.sampleSong} options={{chartType: 'chords'}}/>
+

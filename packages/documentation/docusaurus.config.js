@@ -48,6 +48,12 @@ const config = {
 				respectPrefersColorScheme: true,
 			  },
 		}),
+	i18n:
+	/** @type {import('@docusaurus/types').I18nConfig} */
+	({
+		defaultLocale: 'en',
+		locales: ['en', 'zh-Hans', 'zh-Hant']
+	}),
 };
 
 module.exports = config;

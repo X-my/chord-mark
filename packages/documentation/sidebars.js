@@ -15,7 +15,11 @@
 const sidebars = {
 	// By default, Docusaurus generates a sidebar from the docs folder structure
 	docs: [
-		'getting-started',
+		{
+			type: 'doc',
+			id: 'getting-started',
+			label: 'Getting started',
+		},
 		{
 			type: 'category',
 			label: 'Reference',
