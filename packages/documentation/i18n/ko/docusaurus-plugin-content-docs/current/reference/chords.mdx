@@ -1,0 +1,137 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 코드
+
+## 코드 행
+
+코드 행을 생성하려면 빈 행에 코드 기호를 작성하세요. <CM/> 구문을 제외한 모든 문자를 제외하세요.
+
+코드 행은 다음과 같은 특징이 있습니다：
+
+-  竖선 구분자 `|`로 구분됩니다.
+-  만약 다음에 코드 위치 표시가 있는 가사 행이 있으면, 코드는 해당 가사 위에 배치됩니다.
+-  만약 그렇지 않으면, 코드는 전체 노래에서 정렬됩니다.
+
+코드 기호 사이에 아무리 많은 공백을 남겨도 <CM/>는 이를 무시하고, 코드의 위치를 결정하는 자신의 알고리즘을 사용합니다.
+
+<TabbedChordMark src={'Am7 Am7/G F#m7b5 FM7\nE7   E7+ Am7   Am7+'} />
+
+만약 코드 행에 코드 기호가 아닌 내용이 있으면, 그것은 코드 행으로 간주되지 않으며, 위의 특징에서 혜택을 받지 않습니다.
+이것은 코드 기호가 코드 기호로 인식되지 않는 경우에도 마찬가지입니다.
+
+<TabbedChordMark
+	src={'"|" 문자의 추가 사용:\nA7 | D7\n无效 코드 기호:\nA7 D7(b9'}
+/>
+
+## 코드 시간값
+
+기본 코드 지속 시간은 한 소절, 즉 4박입니다.
+만약 코드 지속 시간을 더 짧게 하려면, 코드 기호 뒤에 점 `.`을 작성하세요. 각 박에 점 하나를 사용합니다.
+
+<TabbedChordMark src={'A7.. D7.. E7... A7.'} />
+
+위의 예제는 두 소절을 생성합니다：
+
+-   첫 번째 소절에는 두 코드가 있습니다 (`A7`와 `D7`), 각 코드는 2박 지속됩니다.
+-   두 번째 소절에는 3박 지속되는 코드 (`E7`)와 네 번째 박에 있는 코드 (`A7`)가 있습니다.
+
+기본적으로, <CM/>는 한 소절에 불균일한 코드 지속 시간이 포함된 경우에만 지속 시간 표시를 렌더링합니다.
+만약 한 소절의 모든 코드가 동일한 지속 시간을 공유하면, 점은 렌더링되지 않습니다.
+
+<TabbedChordMark
+	src={
+		'박수 계산 오류:\nA7... D7..\n여러 소절에 걸쳐 있는 코드의 경우, 각 소절에 대해 지정하세요:\nA7.. D7.... E7..\nA7.. D7.. D7.. E7..'
+	}
+/>
+
+## 분박 코드 지속 시간
+
+만약 어떤 코드의 지속 시간이 한 박보다 작은 경우, 분박 구분자를 사용하여 같은 박에서 연주되는 코드 그룹을 생성할 수 있습니다.
+
+<TabbedChordMark
+	src={
+		'C.. G..\nWhen I _find myself in _times of trouble\nAm. [Am Am/G] FM7. F6.\n_ Mother _Ma_ry _comes to _me'
+	}
+/>
+
+분박 구분자 내에서는 코드 지속 시간 표시를 사용하지 않고, 구분자 내의 코드 수에 따라 코드 지속 시간이 정의됩니다. 이는 코드 지속 시간 표시를 사용하지 않아도 된다는 것을 의미합니다：
+
+<TabbedChordMark
+	src={
+		'8분음符:\nC.. G. [Am Am/G]\n8분음符 트리플렛:\nC.. G. [Am Am/G F]\n16분음符:\nC.. G. [Am Am/G F C]'
+	}
+/>
+
+만약 분박 구분자가 코드 지속 시간 표시, 단일 코드, 또는 네 개 이상의 코드를 포함하면, 해당 구분자는 무효입니다：
+
+<TabbedChordMark
+	src={'무효:\nC.. G. [B. A7.]\nC.. G. [B]\nC.. G. [B C/E Am G F]'}
+/>
+
+##拍자
+
+만약 당신의 노래가 4/4拍자가 아닌 경우, 시간 서명을 단독으로 한 행에 지정할 수 있습니다.
+
+<TabbedChordMark src={'3/4\nDm Gm.. C.'} />
+
+한 노래에서 여러拍자를 혼용하여 사용할 수도 있습니다.
+
+<TabbedChordMark
+	src={'3/4\nDm Gm.. C.\n\n4/4\nA7.. D7.. E7... A7.\n\n5/4\nGm... C. Dm7.'}
+/>
+
+가장 일반적인 시간 서명은 <CM/>에 의해 인식됩니다.
+
+당신은 또한 코드 행 내에서 시간 서명의 변경을 선언할 수 있습니다.
+새로운 시간 서명은 같은 행에 새로운 시간 서명이 선언되거나 행이 끝날 때까지 지속됩니다.
+
+<TabbedChordMark
+	src={
+		"4/4\n#i\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!\n\n#v\n5/4 A... G.. G... A..\n_Nothing to do to _save his life, _call his wife _in,\n5/4 A... G.. 3/4 G 4/4 A\n_Nothing to say, but, \"_What a day! _How's your boy _been?\"\n5/4 D 4/4 E.. E7..\n_Nothing to do, it's up to _you,\n3/4 A G\nI've got _nothing to say, but _it's okay,\n\n#c\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!"
+	}
+/>
+
+만약 시간 서명의 변경이 구절 변경 전에 발생하면, 새로운 구절에서 직접 선언하거나 구절 태그 앞에 한 행에 선언하여, 자동 코드 반복 기능을 사용할 때 이전 구절에 적용되지 않도록 합니다.
+
+## 소절 반복
+
+당신은 `%` 기호를 사용하여 현재 행에서 마지막으로 선언된 소절을 반복할 수 있습니다.
+
+<TabbedChordMark src={'A7 %%%\nD7 % A7 %\nE7 D7 A7 %'} />
+
+언제든지 가능하면, <CM/>는 반복된 소절을 렌더링합니다, 심지어 그것들이 명시적으로 반복으로 지정되지 않았다 해도.
+
+<TabbedChordMark src={'A7.. D7.. %\nD7.. E7. A7. D7.. E7. A7.'} />
+
+## 코드 행 반복
+
+ `%` 문자가 단독으로 사용되면, <CM/>는 마지막으로 선언된 코드 행을 반복합니다.
+
+<TabbedChordMark src={'A7 D7\n%'} />
+
+당신은 `%%`를 사용하여 이전에 선언된 코드 행으로 돌아가 반복할 수 있습니다：
+
+<TabbedChordMark src={'A7 D7\nE7 A7\n%%\n%'} />
+
+## 전체 구절 반복
+
+전체 구절에서 정의된 모든 코드를 반복하는 방법에 대해 구절 태그 문서를 참조하세요.
+
+## 코드 없음
+
+만약 특정 순간에 어떤 코드도 연주하지 않아야 하면, 특별한 `NC` 기호를 사용하세요
+
+<TabbedChordMark src={'NC Am Dm7'} />
+
+## 코드 기호 표준화
+
+일관성을 위해, <CM/>는 코드 기호를 표준화합니다.
+
+<TabbedChordMark src={'CMAJ7\nC^\nCM7\nCΔ\nCmajor7'} />
+
+뒤에서, <CM/>는 강력한 <CS/> 라이브러리를 사용합니다. 이 라이브러리는 거의 모든 코드 기호를 해석하고, [광범위하게 인정되는 관례](https://github.com/no-chris/chord-symbol/tree/master/packages/chord-symbol#background-information)에 기반하여 표준화합니다.
+
+이 표준화는 때때로 작성 프로세스를 가속할 수도 있습니다：
+
+<TabbedChordMark src={'Dm7(b5)\nDh'} />

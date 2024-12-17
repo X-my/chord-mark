@@ -52,7 +52,7 @@ const config = {
 	/** @type {import('@docusaurus/types').I18nConfig} */
 	({
 		defaultLocale: 'en',
-		locales: ['en', 'zh-Hans', 'zh-Hant', 'ja']
+		locales: ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ko']
 	}),
 };
 

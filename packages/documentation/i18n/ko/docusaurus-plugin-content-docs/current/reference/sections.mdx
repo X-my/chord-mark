@@ -1,0 +1,63 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+import data from '../../../../../docs/reference/sections-data';
+
+# 단락
+
+## 단락 선언 행
+
+단락은 노래의 독립적인 부분으로, 예를 들어 前奏, 주제가, 후렴, 독주 등이 <CM/>의 가장 강력한 기능의 핵심입니다. 동일한 유형의 단락 간에 코드가 자동으로 반복됩니다.
+시스템적으로 구간 태그를 사용하는 것을 강력하게 추천합니다.
+
+## 새로운 단락 선언
+
+새로운 단락을 생성하려면 `#` 문자 다음에 문자를 사용하세요：
+
+<TabbedChordMark src={'#intro\n#verse\n#bridge\n#chorus\n#verse\n#chorus'} />
+
+참고로, 동일한 단락 태그（예: `#verse`, `#chorus`...）를 사용하여 동일한 유형의 여러 단락을 선언해야 합니다. <CM/>는 자동으로 번호를 매깁니다.
+
+단락 태그는 알파벳으로 구성된 단어여야 하며, 대문자 또는 소문자로 사용할 수 있습니다. 
+만약 다른 문자, 예를 들어 공백이 포함된 경우, 해당 행은 가사 행으로 간주되며, 단락을 선언하지 않습니다.
+
+<TabbedChordMark src={'유효한 태그：\n#custom\n#mySection\n\n无效한 태그：\n#my section\n#1custom\n#custom 2'} />
+
+단락을 끝내려면 새로운 단락을 선언하거나 파일을 끝내면 됩니다：
+
+<TabbedChordMark src={'#verse\n이 주제가입니다 \n\n#chorus\n이 후렴입니다'} />
+
+## 약어 기호
+
+<CM/>는 가장 일반적인 단락 이름에 대한 약어 기호를 제공합니다. 
+이것은 모든 사용할 수 있는 약어 기호의 목록입니다. 사용을 적극 추천합니다：
+
+<TabbedChordMark src={'#a\n#b\n#c\n#i\n#o\n#p\n#s\n#u\n#v'} />
+
+## 코드 반복
+
+이제 재미있는 부분을 살펴보겠습니다.
+한 번 단락에 코드를 지정하면, 다음에 동일한 태그를 사용하는 단락에 자동으로 반복됩니다.
+코드 행이 더 이상 존재하지 않더라도, 코드 위치 표시만으로도 위와 같이 코드를 명시적으로 작성한 것과 동일하게 정의할 수 있습니다.
+
+<TabbedChordMark src={data.repeat1} />
+
+만약 반복되는 단락에서 코드가 다르다면, 새로운 코드 행으로 이를 덮어쓰면 됩니다！
+덮어쓰기는 현재 반복되는 단락에만 적용됩니다：
+
+<TabbedChordMark src={data.repeat2} />
+
+## 전체 단락 반복
+
+만약 단락의 코드와 가사가 동일하다면, 단지 태그만 작성하고 단락 본문을 비워둡니다.
+
+<TabbedChordMark src={data.repeat3} />
+
+기본적으로, 첫 번째로 선언된 해당 태그의 단락을 반복합니다. 당신은 또한 특정 단락을 지정하기 위해 태그 뒤에 인덱스를 추가할 수도 있습니다：
+
+<TabbedChordMark src={data.repeat4} />
+
+## 단락 복사
+
+만약 단락이 연속으로 여러 번 재생되어야 하면, 이를 복사하세요：
+
+<TabbedChordMark src={'#c x2\nE7 D7\n후렴이 연속으로 두 번 재생'} options={{ expandSectionMultiply: false }} />
