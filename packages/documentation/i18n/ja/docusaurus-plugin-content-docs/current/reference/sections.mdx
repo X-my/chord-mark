@@ -1,0 +1,63 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+import data from '../../../../../docs/reference/sections-data';
+
+# パラグラフ
+
+## パラグラフの宣言行
+
+パラグラフは、前奏、メイン、副歌、ソロなど、曲の中で独立したセクションを表します。これは <CM/> の最も強力な機能であり、同じタイプのパラグラフ間のコードが自動的に繰り返されます。
+セクションタグをシステム的に使用することを強くお勧めします。
+
+## パラグラフの宣言
+
+新しいパラグラフを作成するには、`#` 文字の後に文字を追加します：
+
+<TabbedChordMark src={'#intro\n#verse\n#bridge\n#chorus\n#verse\n#chorus'} />
+
+同じタイプの複数のパラグラフを宣言するには、同じパラグラフタグ（例：`#verse`、`#chorus`...）を使用することをお勧めします。 <CM/> は自動的に番号を付けます。
+
+パラグラフタグは、大文字または小文字のアルファベットで構成される単語である必要があります。
+他の文字が含まれている場合、その行は歌詞行と見なされ、パラグラフは宣言されません。
+
+<TabbedChordMark src={'有効なタグ：\n#custom\n#mySection\n\n無効なタグ：\n#my section\n#1custom\n#custom 2'} />
+
+パラグラフを終了するには、新しいパラグラフを宣言するか、ファイルを終了します：
+
+<TabbedChordMark src={'#verse\nこれはメイン \n\n#chorus\nこれは副歌'} />
+
+## 簡略記号
+
+作業速度を向上させるために、<CM/> には最も一般的に使用されるパラグラフ名の簡略記号があります。
+使用可能なすべての簡略記号のリストです。これらを積極的に使用することを強くお勧めします：
+
+<TabbedChordMark src={'#a\n#b\n#c\n#i\n#o\n#p\n#s\n#u\n#v'} />
+
+## コードの繰り返し
+
+ここでいくつか面白い部分を見てみましょう。
+パラグラフにコードが指定されると、同じタグを使用する次のパラグラフに自動的に繰り返されます。
+コード行が存在しなくても、コード位置マークを明示的に書くことで定義できます。
+
+<TabbedChordMark src={data.repeat1} />
+
+繰り返しのパラグラフでコードが異なる場合、新しいコード行でそれらを上書きするだけです！
+上書きは現在の繰り返しのパラグラフにのみ適用されます：
+
+<TabbedChordMark src={data.repeat2} />
+
+## パラグラフ全体の繰り返し
+
+パラグラフのコードと歌詞が同じ場合、タグを書き、パラグラフ本体を空白のままにしてください。
+
+<TabbedChordMark src={data.repeat3} />
+
+デフォルトでは、最初に宣言されたタグを持つパラグラフが繰り返されます。タグの後にそのインデックスを追加することで、特定のパラグラフを指定できます：
+
+<TabbedChordMark src={data.repeat4} />
+
+## パラグラフのコピー
+
+パラグラフを複数回連続して再生する場合は、単純にコピーしてください：
+
+<TabbedChordMark src={'#c x2\nE7 D7\n副歌を2回連続で再生'} options={{ expandSectionMultiply: false }} />

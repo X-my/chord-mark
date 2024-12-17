@@ -1,0 +1,88 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 調
+
+## 調の宣言行
+
+歌曲のどの部分でも `key` キーワードを使用して調を宣言できます：
+
+<TabbedChordMark src={'key C\nC F G C'} />
+
+節奏の変更前に調が変わる場合、自動和弦の重複機能を使用するときに調が前の一節に重複して適用されるのを避けるために、新しい節の直接、または節のタグの前一行で調を宣言してください。
+
+和弦譜の読者に明確さをもたらす以外に、調を一つ以上宣言することで少なくとも3つの利点があります。
+
+### 1/ 自動移調
+
+最初の利点は - 私の見解では - <CM /> の非常にクールな特徴の一つです！
+歌曲中で調の変更が起こり、自動和弦の重複を使用する際に、<CM /> は新しい調の宣言に基づいて自動で移調を繰り返します。
+以下の例をご覧ください：
+
+<TabbedChordMark
+	src={
+		'key C\n#v\nDm7 G7 C %\n第一のメインの歌詞はC調\n\nkey G\n#v\n第二の歌詞はG調！'
+	}
+/>
+
+移調の基礎となるキーは、最初に明確に宣言された調であるため、最初の和弦の前に調を定義することが非常に重要です。
+
+### 2/ 臨時升降号の正しいレンダリング
+
+第二の利点は、臨時升降号（`#` と `b`）のレンダリングに関連しています。
+ソースファイルに混合の臨時升降号が含まれている場合、調を宣言することで <CM/> が臨時升降号を自動で標準化し、適切な記号を選択します
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _'
+	}
+/>
+
+注意してください：調を宣言しない場合、<CM/> は歌曲中で使用される和弦に基づいて調を自動で検出します。
+これはシンプルな歌曲ではうまく機能すると思いますが、より複雑な場合には失敗する可能性があります。
+そのため、ベストプラクティスとして、常に調を明確に宣言してください。
+
+歌曲に複数のキーが含まれている場合、臨時升降号も正しく選択されます：
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+/>
+
+`auto` モードで移調する際、<CM/> は実際に使われていない[理論的調](https://en.wikipedia.org/wiki/Theoretical_key)を避けるように努力します。
+例えば、降調 `Layla` の半音をC#m調として扱い、Dbm調の合唱として扱わないようにします。再度注意してください、各調で適切な臨時升降号が使用されています。
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+	options={{ transposeValue: -1 }}
+/>
+
+### 3/ 和声分析
+
+調の第三の利点は、<CM/> が[ローマ数字記号](https://en.wikipedia.org/wiki/Roman_numeral_analysis)を使用して和声分析を助けることです。
+これは明確にキーを設定する場合にのみ可能で、さもなくばすべての記号が `I`、`i` または `?` としてレンダリングされます。
+和弦を音符から数値記号に変換する方法は非常に基本的で簡単です：宣言された調に基づいて、<CM/> は歌曲の和弦が調と同じ音であるか、平行大調/小調のキーと同じ音であるか（例えば「借用」の和弦）を検出します。
+当然、和声分析はこの単純な方法を超えていますが、将来 <CM/> にさらに多くの機能を追加したいと思います。
+
+<TabbedChordMark
+	src={
+		'key Em\n6/8\nEm D. C.\n_ Forever trusting _who we are\nG.  B7. Em %\n_ and _nothing else _matters'
+	}
+	options={{ symbolType: 'roman' }}
+/>
+
+ご注意ください：
+
+-   調と同じ音の記号は背景色でレンダリングされます
+-   借用された和弦は少し暗い背景色でレンダリングされます
+-   未識別の和弦は背景色のレンダリングがされません
+
+<TabbedChordMark
+	src={'key C\nC/E Dm7/F Fm Gm Ab7'}
+	options={{ symbolType: 'roman' }}
+/>
+
+もし調が不明な場合は、数つの調を試してみてください！その歌曲がその調の全音階和弦を持っているかどうかをすぐに確認できます。もし那样である場合は、その調が適切な選択である可能性が高いです。

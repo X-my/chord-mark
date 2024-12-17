@@ -1,0 +1,59 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# 歌詞
+
+## 歌詞行
+
+和弦行以外の行はすべて歌詞行で、節拍標記や段落宣言の少数の例外を除いています。
+
+<TabbedChordMark src={'一行に任意の内容を持つ歌詞'} />
+
+歌詞行は、和弦位置標記を含む場合を除いて、特別な動作を表示しません。
+
+## 和弦位置標記
+
+前一個和弦行の和弦がどこで演奏されるかを指定するために `_` 文字を使用できます。
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7\n_A lyric line _with positioned _chords\n\n%\n\n_Another one _without an immediatly preceding _chord line'
+	}
+/>
+
+歌詞行に位置標記が含まれていない場合、和弦は他の和弦行と揃えられます：
+
+<TabbedChordMark
+	src={'A7 E7.. E7+..\nBm7.. E7.. A7\n位置指定のない歌詞行'}
+/>
+
+歌詞行に和弦よりも多くの位置標記がある場合、余分なものは無視されます。
+もし、それが少ない場合、残りの和弦は行の末尾に表示されます：
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7 Bm7.. E7.. A7\n_位置指定が多すぎる歌詞 _行\n%\n_位置指定が少なすぎる _もう一つの'
+	}
+/>
+
+## 跨多小節の和弦
+
+これは、歌曲を書く際に <CM/> で他のフォーマットよりも少し多くの作業が必要な少数の場合の一つです。
+同じ和弦が複数の小節で演奏される場合、各小節に位置標記を追加する必要があります。
+この（最小の）余分な努力は、歌詞の位置の明確さを高めることになります。
+
+<TabbedChordMark
+	src={"A7 %%\nYou don't have to be _beautiful _ to turn me _on "}
+/>
+
+## 強制歌詞行
+
+少数の場合、<CM/> は歌詞行を和弦行として解釈することがあります。
+そのような場合、行頭に `:` 文字を追加することで、歌詞としての検出を強制できます。
+
+<TabbedChordMark src={'Ah Ah Ah\n:Ah Ah Ah\nFish\n:Fish'} />
+
+注意、行頭に他の文字を追加することでも歌詞検出を強制できます。
+唯一の違いは、`: ` はレンダリング時に隠されることです。
+
+<TabbedChordMark src={'Ah\nAh!\n:Ah'} />

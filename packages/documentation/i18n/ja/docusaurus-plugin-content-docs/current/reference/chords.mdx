@@ -1,0 +1,138 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+
+# 和弦
+
+## 和弦行
+
+和弦行を作成するには、空行に和弦記号を書き込み、<CM/>の構文の一部ではない他の文字を除外します。
+
+和弦行は以下の特徴があります：
+
+-   竖線 `|` で区切られています
+-   和弦位置マークが付いた歌詞行が続く場合、その和弦は関連する歌詞の上に配置されます
+-   そうでない場合、曲全体で整齐に配置されます
+
+和弦記号の間に任意の空白を挿入できますが、<CM/>はこれらの空白を無視し、独自のアルゴリズムを使用して和弦を配置します。
+
+<TabbedChordMark src={'Am7 Am7/G F#m7b5 FM7\nE7   E7+ Am7   Am7+'} />
+
+一行に和弦記号以外の内容を書き込むと、それは和弦行として扱われませんし、上記の特徴からも利益を受けません。
+これは、和弦記号が和弦記号として認識されない場合も同様です。
+
+<TabbedChordMark
+	src={'Extra "|" character:\nA7 | D7\nInvalid chord symbol:\nA7 D7(b9'}
+/>
+
+## 和弦時值
+
+デフォルトの和弦持続時間は小節全体、すなわち4拍です。
+もし和弦持続時間を短くしたい場合は、記号の後に点 `.` を書き込み、各拍に1点を使用します。
+
+<TabbedChordMark src={'A7.. D7.. E7... A7.'} />
+
+上記の例は二つの小節を作成します：
+
+-   第一小節には、各々2拍持続する二つの和弦（`A7`と`D7`）があります
+-   第二小節には、3拍持続する和弦（`E7`）と、第四拍に始まる和弦（`A7`）があります
+
+デフォルトでは、<CM/>は小節内の和弦が不均一な持続時間を持つ場合にのみ持続時間マークをレンダリングします。
+小節内の全ての和弦が同じ持続時間を持つ場合、点はレンダリングされません。
+
+<TabbedChordMark
+	src={
+		'Invalid beat count:\nA7... D7..\nIf a chord spans multiple bar, specify it for each bar:\nA7.. D7.... E7..\nA7.. D7.. D7.. E7..'
+	}
+/>
+
+## 子拍和弦持続時間
+
+もし和弦持続時間が一拍未満である場合、子拍分隔符を使用して同じ拍で演奏される一連の和弦を作成できます。
+
+<TabbedChordMark
+	src={
+		'C.. G..\nWhen I _find myself in _times of trouble\nAm. [Am Am/G] FM7. F6.\n_ Mother _Ma_ry _comes to _me'
+	}
+/>
+
+子拍分隔符内では、和弦持続時間マークを使用するのではなく、分隔符内の和弦の数に基づいて和弦持続時間を定義します。これは、和弦持続時間マークを使用する必要がないことを意味します：
+
+<TabbedChordMark
+	src={
+		'8th notes:\nC.. G. [Am Am/G]\n8th notes triplet:\nC.. G. [Am Am/G F]\n16th notes:\nC.. G. [Am Am/G F C]'
+	}
+/>
+
+もし子拍分隔符が和弦持続時間マーク、単一の和弦、または四つ以上の和弦を含む場合、その分隔符の定義は無効です：
+
+<TabbedChordMark
+	src={'Invalid:\nC.. G. [B. A7.]\nC.. G. [B]\nC.. G. [B C/E Am G F]'}
+/>
+
+## 拍号
+
+もし曲が4/4拍ではない場合、単に時間記号を別の行に指定することができます。
+
+<TabbedChordMark src={'3/4\nDm Gm.. C.'} />
+
+曲中で複数の拍号を混合使用することもできます。
+
+<TabbedChordMark
+	src={'3/4\nDm Gm.. C.\n\n4/4\nA7.. D7.. E7... A7.\n\n5/4\nGm... C. Dm7.'}
+/>
+
+最も一般的な時間記号は<CM/>によって認識されます。
+
+曲中で時間記号の変更を宣言することもできます。
+新しい時間記号は、同じ行上に新しい時間記号が宣言されるまで、または行の終わりに至るまで続きます。
+
+<TabbedChordMark
+	src={
+		"4/4\n#i\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!\n\n#v\n5/4 A... G.. G... A..\n_Nothing to do to _save his life, _call his wife _in,\n5/4 A... G.. 3/4 G 4/4 A\n_Nothing to say, but, \"_What a day! _How's your boy _been?\"\n5/4 D 4/4 E.. E7..\n_Nothing to do, it's up to _you,\n3/4 A G\nI've got _nothing to say, but _it's okay,\n\n#c\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!"
+	}
+/>
+
+もし時間記号の変更が節の変更前に発生する場合、無論新しい節の直接の宣言か、節のラベル前の行での宣言であれ、自動和弦リピート機能を使用する際に前の節に適用されるのを避けるために、避けるべきです。
+
+## 重複小節
+
+ `%` 記号を使用して、現在行上で最後に宣言された小節を重複させることができます。
+
+<TabbedChordMark src={'A7 %%%\nD7 % A7 %\nE7 D7 A7 %'} />
+
+可能な限り、<CM/>は重複する小節をレンダリングします、明示的に重複として指定されていない場合でも。
+
+<TabbedChordMark src={'A7.. D7.. %\nD7.. E7. A7. D7.. E7. A7.'} />
+
+## 重複和弦行
+
+ `%` 文字が単独で使用される場合、<CM/>は最後に宣言された和弦行を重複させることを指示します。
+
+<TabbedChordMark src={'A7 D7\n%'} />
+
+ `%%` を使用して、最後に宣言された和弦行に戻り、それを重複させることもできます：
+
+<TabbedChordMark src={'A7 D7\nE7 A7\n%%\n%'} />
+
+## 重複全節
+
+特定の節中で定義された全ての和弦を重複させる方法については、節ラベルドキュメントを参照してください。
+
+## 無和弦
+
+特定の瞬間に和弦を演奏しない場合は、特殊な `NC` 記号を使用します
+
+<TabbedChordMark src={'NC Am Dm7'} />
+
+## 和弦記号標準化
+
+一致性を高めるために、<CM/>はレンダリング時に和弦記号を標準化します。
+
+<TabbedChordMark src={'CMAJ7\nC^\nCM7\nCΔ\nCmajor7'} />
+
+裏では、<CM/>は強力な <CS/> ライブラリを使用して、ほとんどの和弦記号を解析し、[広く認められた慣例](https://github.com/no-chris/chord-symbol/tree/master/packages/chord-symbol#background-information)に基づいて標準化します。
+
+この標準化は、時には作成プロセスを加速することもできます：
+
+<TabbedChordMark src={'Dm7(b5)\nDh'} />
