@@ -1,0 +1,59 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Escribiendo letras
+
+## Líneas de letras
+
+Cualquier línea que no sea una línea de acordes se considera una línea de letra, con algunas excepciones como las declaraciones de compás o etiquetas de sección.
+
+<TabbedChordMark src={'Una línea con contenido arbitrario'} />
+
+Las líneas de letra no muestran ningún comportamiento específico excepto cuando contienen marcadores de posición de acordes.
+
+## Marcadores de posición de acordes
+
+El carácter `_` se puede usar para especificar dónde deben tocarse los acordes de la línea de acordes inmediatamente anterior.
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7\n_Una línea de letra _con acordes _posicionados\n\n%\n\n_Otra _sin una línea de acordes _inmediatamente anterior'
+	}
+/>
+
+Si la línea de letra no contiene ningún marcador de posición, entonces los acordes se alinean con otras líneas de acordes:
+
+<TabbedChordMark
+	src={'A7 E7.. E7+..\nBm7.. E7.. A7\nUna línea de letra sin acordes posicionados'}
+/>
+
+Si la línea de letra tiene más marcadores de posición que acordes para posicionar, entonces los extras se ignoran.
+Si tiene menos, entonces los acordes restantes se muestran al final de la línea:
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7 Bm7.. E7.. A7\n_Una _línea _de _letra _con _demasiados _marcadores _de _posición\n%\n_Otra _con _demasiados _pocos _de ellos'
+	}
+/>
+
+## Acordes que abarcan múltiples compases
+
+Este es uno de los pocos casos en los que escribir canciones en <CM/> realmente requiere un poco de trabajo extra en comparación con otros formatos.
+Si el _mismo_ acorde se toca durante varios compases, necesitarás agregar un marcador de posición para cada uno de esos compases.
+Este (mínimo) esfuerzo adicional resulta en una claridad mucho mejor en la colocación de letras, sin embargo.
+
+<TabbedChordMark
+	src={"A7 %%\nNo tienes que ser _hermosa _para encenderme "}
+/>
+
+## Líneas de letra forzadas
+
+Hay algunos - raros - casos en los que <CM/> podría interpretar una línea de letra como una línea de acordes.
+Cuando esto ocurre, puedes forzar que una línea sea detectada como letra agregando el símbolo `:` al principio.
+
+<TabbedChordMark src={'Ah Ah Ah\n:Ah Ah Ah\nPez\n:Pez'} />
+
+Ten en cuenta que también podrías agregar cualquier otro carácter a la línea para forzar la detección de letra.
+La única diferencia es que el `:` estará oculto en el momento de la renderización.
+
+<TabbedChordMark src={'Ah\n¡Ah!\n:Ah'} />

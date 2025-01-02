@@ -1,0 +1,139 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Escribiendo acordes
+
+## Líneas de acordes
+
+Para crear una línea de acordes, simplemente escribe los símbolos de acordes uno tras otro en una línea vacía, excluyendo cualquier otro carácter que no sea parte de la sintaxis de <CM/>.
+
+Las líneas de acordes son líneas especiales que tienen las siguientes características:
+
+-   se renderizarán con separadores de barra `|`
+-   si son seguidas por una línea de letras con marcadores de posición de acordes, los acordes se colocarán sobre las letras relevantes
+-   si no, estarán alineados ordenadamente entre ellos a lo largo de toda la canción
+
+Deja tantos espacios como desees entre los símbolos, pero ten en cuenta que <CM/> los ignorará y usará sus propios algoritmos para posicionar los acordes.
+
+<TabbedChordMark src={'Am7 Am7/G F#m7b5 FM7\nE7   E7+ Am7   Am7+'} />
+
+Si escribes algo que no sean símbolos de acordes en una línea, entonces no se considerará como una línea de acordes y no se beneficiará de ninguna de las características especiales mencionadas anteriormente.
+Eso también es cierto si un símbolo de acorde no se reconoce como tal.
+
+<TabbedChordMark
+	src={'Caracteres "|" extra:\nA7 | D7\nSímbolo de acorde inválido:\nA7 D7(b9'}
+/>
+
+## Duración del acorde
+
+La duración predeterminada del acorde es toda la barra, es decir, 4 tiempos.
+Si deseas que un acorde sea más corto, necesitas especificar cuántos tiempos debe tocarse escribiendo puntos `.` justo después del símbolo.
+Usa un punto por tiempo.
+
+<TabbedChordMark src={'A7.. D7.. E7... A7.'} />
+
+El ejemplo anterior crea dos barras:
+
+-   la primera barra tiene 2 acordes (`A7` y `D7`) que duran 2 tiempos cada uno
+-   la segunda barra tiene un acorde que dura 3 tiempos (`E7`) y otro en el cuarto tiempo (`A7`).
+
+Por defecto, <CM/> renderiza los marcadores de duración solo cuando una barra contiene acordes con duración desigual.
+Si todos los acordes en una barra comparten la misma duración, entonces los puntos no se renderizan.
+
+Ten cuidado de que la matemática debe ser correcta **en base a cada barra**.
+Si las duraciones de los acordes no suman, la línea no se considerará como una línea de acordes.
+
+<TabbedChordMark
+	src={
+		'Conteo de tiempos inválido:\nA7... D7..\nSi un acorde abarca múltiples barras, especifícalo para cada barra:\nA7.. D7.... E7..\nA7.. D7.. D7.. E7..'
+	}
+/>
+
+## Duración de acordes sub-batidos
+
+Si algunos acordes duran menos de un tiempo, puedes usar los delimitadores sub-batidos para crear un grupo de acordes que se toquen durante el mismo tiempo.
+
+<TabbedChordMark
+	src={
+		'C.. G..\nCuando _me encuentro en _momentos de dificultad\nAm. [Am Am/G] FM7. F6.\n_ Madre _Ma_ry _viene a _mí'
+	}
+/>
+
+Dentro de los delimitadores sub-batidos, es el número de acordes en los grupos lo que define la duración del acorde, lo que significa que no es necesario usar marcadores de duración de acordes:
+
+<TabbedChordMark
+	src={
+		'Notas de octava:\nC.. G. [Am Am/G]\nNotas de octava tripleta:\nC.. G. [Am Am/G F]\nNotas de dieciseisava:\nC.. G. [Am Am/G F C]'
+	}
+/>
+
+Una definición de grupo sub-batido es inválida si contiene marcadores de duración de acordes, un solo acorde o más de cuatro acordes:
+
+<TabbedChordMark src={'Inválido:\nC.. G. [B. A7.]\nC.. G. [B]\nC.. G. [B C/E Am G F]'} />
+
+## Compás
+
+Si tu canción no está en 4/4, simplemente puedes especificar el compás en una línea separada.
+
+<TabbedChordMark src={'3/4\nDm Gm.. C.'} />
+
+Puedes mezclar múltiples compases por canción.
+
+<TabbedChordMark
+	src={'3/4\nDm Gm.. C.\n\n4/4\nA7.. D7.. E7... A7.\n\n5/4\nGm... C. Dm7.'}
+	/>
+
+Los compases más comúnmente utilizados son reconocidos por <CM/>.
+
+Es posible declarar un cambio de compás dentro de una línea de acordes.
+El nuevo compás durará hasta que se declare uno nuevo en la misma línea, o hasta el final de la línea.
+
+<TabbedChordMark
+	src={
+		"4/4\n#i\nA.. Dsus2.. A\nBuenos _días, buenos _días, buenos _días, ¡ah!\n\n#v\n5/4 A... G.. G... A..\n_No hay nada que hacer para _salvar su vida, _llama a su esposa _en,\n5/4 A... G.. 3/4 G 4/4 A\n_No hay nada que decir, pero, \"_¡Qué día! _¿Cómo ha estado tu chico?\n5/4 D 4/4 E.. E7..\n_No hay nada que hacer, depende de _ti,\n3/4 A G\nNo tengo _nada que decir, pero _está bien,\n\n#c\nA.. Dsus2.. A\nBuenos _días, buenos _días, buenos _días, ¡ah!"
+	}
+/>
+
+Si ocurre un cambio de compás antes de un cambio de sección, declara directamente en la nueva sección, o en la línea inmediatamente anterior a la etiqueta de sección, para evitar que se repita para la sección anterior al usar la función automática de repetición de acordes.
+
+## Repetir barras
+
+Puedes usar el símbolo `%` para repetir la última barra declarada en la línea actual.
+
+<TabbedChordMark src={'A7 %%%\nD7 % A7 %\nE7 D7 A7 %'} />
+
+Siempre que sea posible, <CM/> renderizará las barras repetidas con los símbolos `%`, incluso si no se especificaron explícitamente como tales.
+
+<TabbedChordMark src={'A7.. D7.. %\nD7.. E7. A7. D7.. E7. A7.'} />
+
+## Repetir líneas de acordes
+
+Cuando se usa solo en una línea dada, el carácter `%` instruye a <CM/> a repetir la última línea de acordes declarada.
+
+<TabbedChordMark src={'A7 D7\n%'} />
+
+Puedes subir dos niveles y repetir la penúltima línea de acordes declarada usando `%%`.
+
+<TabbedChordMark src={'A7 D7\nE7 A7\n%%\n%'} />
+
+## Repetir secciones completas
+
+Por favor, consulta la documentación de etiquetas de sección para aprender cómo puedes repetir todos los acordes definidos en una sección dada.
+
+## Sin acordes
+
+Si no se debe tocar ningún acorde en un momento dado, simplemente usa el símbolo especial `NC`.
+
+<TabbedChordMark src={'NC Am Dm7'} />
+
+## Normalización de símbolos de acordes
+
+Para mayor consistencia, <CM/> normaliza los símbolos de acordes en el momento de la renderización.
+
+<TabbedChordMark src={'CMAJ7\nC^\nCM7\nCΔ\nCmajor7'} />
+
+Bajo el capó, <CM/> utiliza la poderosa biblioteca <CS/>, que es capaz de analizar prácticamente cualquier símbolo de acorde y realiza la normalización basada en [convenciones ampliamente reconocidas](https://github.com/no-chris/chord-symbol/tree/master/packages/chord-symbol#background-information).
+
+Esta normalización también puede, a veces, acelerar el proceso de escritura:
+
+<TabbedChordMark src={'Dm7(b5)\nDh'} />

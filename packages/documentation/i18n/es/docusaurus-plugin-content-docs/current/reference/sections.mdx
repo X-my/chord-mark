@@ -1,0 +1,69 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+import data from '../../../../../docs/reference/sections-data';
+
+# Secciones
+
+Las secciones son el corazón de algunas de las características más poderosas de <CM/>, como la repetición automática de acordes a través de secciones del mismo tipo.
+Puedes pensar en ellas como partes independientes de una canción, como la Introducción, el Verso, el Estribillo, el Solo...
+
+Dadas las ventajas que aportan, se recomienda encarecidamente utilizar sistemáticamente las etiquetas de sección.
+
+## Declaración de una sección
+
+Para crear una nueva sección, utiliza el carácter `#` seguido de una sola palabra:
+
+<TabbedChordMark src={'#intro\n#verse\n#bridge\n#chorus\n#verse\n#chorus'} />
+
+Ten en cuenta que debes declarar múltiples secciones de la misma familia con la misma etiqueta de sección (por ejemplo, `#verse`, `#chorus`...). <CM/> las numerará automáticamente.
+
+La etiqueta de sección debe ser una sola palabra compuesta solo por letras, mayúsculas o minúsculas. 
+Si hay otro carácter presente, como un espacio, entonces la línea se considerará como una línea de letra y no se declarará ninguna sección.
+
+<TabbedChordMark src={'Etiquetas válidas:\n#custom\n#mySection\n\nEtiquetas inválidas:\n#my section\n#1custom\n#custom 2'} />
+
+Para finalizar una sección, simplemente declara una nueva, o termina el archivo:
+
+<TabbedChordMark src={'#verse\nEsto es el verso \n\n#chorus\nEsto es el estribillo'} />
+
+## Notación abreviada
+
+Para acelerar el proceso de escritura, <CM/> tiene una notación abreviada para los nombres de secciones más comúnmente utilizados. 
+Aquí está la lista de todos los atajos disponibles. Se recomienda encarecidamente su uso:
+
+<TabbedChordMark src={'#a\n#b\n#c\n#i\n#o\n#p\n#s\n#u\n#v'} />
+
+## Repetición de acordes
+
+Ahora vienen las partes jugosas.
+Una vez que especifiques los acordes para una sección, se repetirán automáticamente para las secciones siguientes declaradas con la misma etiqueta exacta.
+Incluso si las líneas de acordes ya no están allí, los marcadores de posición de acordes se pueden definir exactamente como si los acordes estuvieran escritos explícitamente arriba.
+
+<TabbedChordMark src={data.repeat1} />
+
+Si los acordes difieren un poco en una sección repetida, simplemente sobrescríbelos con una nueva línea de acordes!
+Las sobrescrituras solo se aplican a la sección repetida actual:
+
+<TabbedChordMark src={data.repeat2} />
+
+## Repetir toda una sección
+
+Si una sección se repite con acordes y letras idénticos, simplemente escribe la etiqueta y deja el cuerpo de la sección vacío. 
+
+<TabbedChordMark src={data.repeat3} />
+
+Por defecto, se repetirá la primera sección declarada con esta etiqueta. También puedes apuntar a una específica añadiendo su índice a la etiqueta:
+
+<TabbedChordMark src={data.repeat4} />
+
+## Multiplicar una sección
+
+Si una sección debe ser tocada varias veces seguidas, simplemente multiplícala:
+
+<TabbedChordMark src={'#c x2\nE7 D7\nUn estribillo tocado dos veces seguidas'} options={{ expandSectionMultiply: false }} />
+
+Si el renderizador de <CM/> se llama con el parámetro `expandSectionMultiply: true`, las secciones multiplicadas se repetirán explícitamente.
+
+<TabbedChordMark src={'#c x2\nE7 D7\nUn estribillo tocado dos veces seguidas\n'} options={{ expandSectionMultiply: true }} />
+
+Esto también funciona para secciones repetidas.

@@ -1,0 +1,91 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Declaración de clave
+
+## Líneas de declaración de clave
+
+Es posible declarar la clave de cualquier parte de la canción usando la palabra clave `clave`:
+
+<TabbedChordMark src={'clave C\nC F G C'} />
+
+Si ocurre un cambio de clave antes de un cambio de sección, declara directamente en la nueva sección, o en la línea inmediatamente precedente a la etiqueta de sección,
+para evitar que se repita para la sección anterior al usar la función automática de repetición de acordes.
+
+Aparte de aportar claridad al lector del diagrama de acordes, lo que siempre es una buena cosa, declarar una o varias claves traerá al menos 3 beneficios.
+
+### 1/ Transposición automática
+
+El primer beneficio es - en mi opinión - una de las características más impresionantes de <CM />!
+Siempre que haya un cambio de clave durante una canción, y cuando se está usando la repetición automática de acordes a través de secciones, <CM /> transpondrá automáticamente los acordes repetidos basándose en la nueva declaración de clave.
+Vea el ejemplo a continuación:
+
+<TabbedChordMark
+	src={
+		'clave C\n#v\nDm7 G7 C %\nLa primera estrofa está en la clave de C\n\nclave G\n#v\nY la segunda en la clave de G!'
+	}
+/>
+
+La clave base desde la cual se hace la transposición es siempre la primera explicitamente declarada, así que asegúrate de siempre definir una clave antes de la primera línea de acordes.
+
+### 2/ Renderizado adecuado de accidentales
+
+El segundo beneficio se relaciona con el renderizado de los accidentales de acordes (`#` y `b`).
+Si tu archivo fuente contiene accidentales mixtos, entonces declarar una clave permitirá a <CM/> normalizar automáticamente los accidentales, eligiendo el símbolo adecuado
+
+<TabbedChordMark
+	src={
+		'#v\nclave C#m\nC#m7 Ab7\n_ ¿Qué harás cuando te sientas _solitario?\nC#m7.. C. D. E.. E7..\n_ Nadie _esperando _por tu _lado _'
+	}
+/>
+
+Tenga en cuenta que si no declara una clave, <CM/> intentará detectarla automáticamente basándose en los acordes usados en la canción.
+Mientras esto debería funcionar razonablemente bien para canciones simples, probablemente fallará en casos más complejos.
+Así que como una buena práctica, se recomienda siempre declarar explicitamente una clave.
+
+Los accidentales también se eligen adecuadamente si la canción contiene múltiples claves:
+
+<TabbedChordMark
+	src={
+		'#v\nclave C#m\nC#m7 Ab7\n_ ¿Qué harás cuando te sientas _solitario?\nC#m7.. C. D. E.. E7..\n_ Nadie _esperando _por tu _lado _\n\n#c\nclave Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+/>
+
+Cuando se está transponiendo en el modo de accidental `auto`, <CM/> intenta ser inteligente y evitar [claves teóricas](https://es.wikipedia.org/wiki/Clave_teorica) que no se usan en la práctica.
+Por ejemplo, transponiendo hacia abajo `Layla` por un semitono resultaría en una clave de `C#m` en lugar de `Dbm` para el coro. De nuevo, tenga en cuenta que los accidentales adecuados se usan para cada clave.
+
+<TabbedChordMark
+	src={
+		'#v\nclave C#m\nC#m7 Ab7\n_ ¿Qué harás cuando te sientas _solitario?\nC#m7.. C. D. E.. E7..\n_ Nadie _esperando _por tu _lado _\n\n#c\nclave Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+	options={{ transposeValue: -1 }}
+/>
+
+### 3/ Análisis armónico
+
+El tercer beneficio de usar claves radica en las habilidades de <CM/> para ayudar con el análisis armónico al renderizar los símbolos de acordes como [símbolos romanos](https://es.wikipedia.org/wiki/Análisis_armónico).
+Esto solo se puede hacer si se establece explícitamente una clave, de lo contrario todos los símbolos se renderizarán como `I`, `i` o `?`.
+El enfoque para convertir acordes de notas a símbolos numerales es muy básico y naif: basándose en la clave declarada, <CM/> simplemente detectará si los acordes de la canción son diatónicos con la clave,
+o diatónicos con la clave paralela mayor/menor (por ejemplo, "acordes prestados").
+Por supuesto, hay mucho más en el análisis armónico que este enfoque simple, y espero enriquecer las capacidades de <CM/> con más funcionalidades en el futuro.
+
+<TabbedChordMark
+	src={
+		'clave Em\n6/8\nEm D. C.\n_ Forever trusting _who we are\nG.  B7. Em %\n_ and _nothing else _matters'
+	}
+	options={{ symbolType: 'roman' }}
+/>
+
+Por favor, tenga en cuenta que:
+
+-   los símbolos diatónicos con la clave se renderizan con fondo de color
+-   los acordes prestados se renderizan con un fondo ligeramente más oscuro
+-   los acordes no identificados se renderizan sin fondo de color
+
+<TabbedChordMark
+	src={'clave C\nC/E Dm7/F Fm Gm Ab7'}
+	options={{ symbolType: 'roman' }}
+/>
+
+Si no está seguro de la clave, simplemente pruebe con algunos candidatos! Podrá ver inmediatamente si la canción tiene muchos acordes diatónicos para esta clave.
+Y si es así, entonces la clave dada podría ser un buen candidato.

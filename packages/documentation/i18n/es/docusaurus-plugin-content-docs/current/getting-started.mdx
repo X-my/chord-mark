@@ -1,0 +1,86 @@
+---
+slug: /
+---
+
+import data from '../../../../docs/getting-started-data.js';
+import { CM, CCS, CS } from '../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../src/components/TabbedChordMark';
+
+# Empezando
+
+¡Bienvenido al tutorial de <CM/> de 5 minutos, donde aprenderás los conceptos básicos del formato y sus posibilidades!
+
+## Canción de muestra
+
+Echemos un vistazo a una canción de muestra, Hallelujah, de Leonard Cohen.
+Puedes cambiar entre el archivo fuente, escrito en <CM/>, y la versión renderizada usando las pestañas.
+
+<TabbedChordMark src={data.sampleSong} />
+
+## Desglosándolo
+
+Detallemos el gráfico de acordes anterior línea por línea.
+
+### Primer verso
+
+<TabbedChordMark src={data.sampleSong} srcLines={'1'} renderLines={'1'} />
+
+Esta es una etiqueta de sección que define el inicio de una sección: introducción, verso, estribillo...
+El `#` es el símbolo de la sección; y `v` la notación abreviada para la etiqueta `Verse`.
+<CM/> numerará automáticamente las secciones usando la misma etiqueta.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'2-3'} renderLines={'2-3'} />
+
+La primera línea contiene dos símbolos de acordes seguidos de 2 puntos cada uno. Esto significa que cada acorde debe tocarse durante 2 tiempos.
+Dado que la firma de tiempo por defecto es `4/4`, esta línea se renderizará como una sola barra con 2 acordes.
+Los separadores de barra `|` se añaden automáticamente.
+
+La segunda línea contiene la letra cantada junto con los acordes anteriores. El símbolo de marcador de posición `_` se utiliza para especificar exactamente dónde se debe tocar cada acorde.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'4-5'} renderLines={'4-5'} />
+
+El símbolo `%` instruye a <CM/> a repetir la última línea de acordes definida, por ejemplo, la línea 2.
+
+Aunque los acordes no están definidos explícitamente pero repetidos, <CM/> todavía espera que haya dos acordes presentes en la línea de letra.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'6-7'} renderLines={'6-7'} />
+
+La primera línea declara 2 compases con 2 acordes cada uno.
+Dado que el primer compás tiene acordes con duraciones desiguales (3 tiempos para `F`, 1 tiempo para `G`), el indicador de conteo de tiempo `.` se renderiza explícitamente.
+Se omite cuando cada acorde en un compás debe tocarse durante la misma duración.
+
+La segunda línea contiene solo 3 marcadores de posición de acordes para 4 acordes, ya que el último cambio de acorde ocurre después de que terminan las letras.
+En ese caso, el marcador de posición es opcional y <CM/> simplemente añade el acorde(s) extra al final de la línea.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'12-13'} renderLines={'12-13'} />
+
+Cuando no se especifica una duración para un acorde, como para el `Am` en el segundo compás aquí, entonces <CM/> entiende que debe durar todo el compás, por ejemplo, 4 tiempos en ese caso.
+
+### Primer estribillo
+
+<TabbedChordMark src={data.sampleSong} srcLines={'15-23'} renderLines={'15-23'} />
+
+`#c` declara una nueva sección usando la etiqueta abreviada `c` para `chorus`.
+
+### Segundo verso
+
+<TabbedChordMark src={data.sampleSong} srcLines={'25-31'} renderLines={'25-37'} />
+
+Ahora esto es interesante: al usar la etiqueta de sección `#v` por segunda vez, instruimos a <CM/> a repetir automáticamente los acordes que se han definido para el primer verso, y aplicarlos a la sección actual.
+Lo que significa que esta vez solo se necesitan los marcadores de posición de acordes, y no los símbolos de acordes en sí.
+¡Esto ahorra mucho tiempo al escribir un gráfico de acordes!
+
+Ten en cuenta que <CM/> numerará automáticamente el segundo verso.
+
+### Segundo estribillo
+
+<TabbedChordMark src={data.sampleSong} srcLines={'33'} renderLines={'39-47'} />
+
+Dado que el segundo estribillo es idéntico al primero, podemos simplemente declarar la etiqueta y dejar vacío el contenido de la sección: <CM/> entenderá que debe repetir automáticamente toda la sección.
+
+## Mostrando una cuadrícula de acordes
+
+Ahora digamos que eres un bajista en una banda y que solo te importa la cuadrícula de acordes.
+¡Fácil! <CM/> puede renderizar automáticamente una cuadrícula de acordes bien formateada a partir del mismo archivo fuente:
+
+<TabbedChordMark src={data.sampleSong} options={{chartType: 'chords'}}/>
