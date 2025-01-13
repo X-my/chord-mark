@@ -1,0 +1,143 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Schreiben von Akkorden
+
+## Akkordzeilen
+
+Um eine Akkordzeile zu erstellen, schreibe einfach die Akkordsymbole nacheinander in einer leeren Zeile, wobei alle anderen Zeichen, die nicht Teil der <CM/>-Syntax sind, ausgeschlossen werden.
+
+Akkordzeilen sind spezielle Zeilen, die die folgenden Eigenschaften haben:
+
+-   sie werden mit Taktstrichen `|` gerendert
+-   wenn sie von einer Textzeile mit Akkordpositionsmarkierungen gefolgt werden, werden die Akkorde über den relevanten Text platziert
+-   wenn nicht, werden sie ordentlich zwischen sich über das ganze Lied verteilt
+
+Lasse so viele Leerzeichen wie du möchtest zwischen den Symbolen, aber bedenke, dass <CM/> sie ignorieren und ihre eigenen Algorithmen verwenden wird, um die Akkorde zu positionieren.
+
+<TabbedChordMark src={'Am7 Am7/G F#m7b5 FM7\nE7   E7+ Am7   Am7+'} />
+
+Wenn du auf einer Zeile etwas anderes als Akkordsymbole schreibst, wird es nicht als Akkordzeile betrachtet und wird nicht von den oben genannten speziellen Funktionen profitieren.
+Das gilt auch, wenn ein Akkordsymbol nicht als solches erkannt wird.
+
+<TabbedChordMark
+	src={'Extra "|" character:\nA7 | D7\nInvalid chord symbol:\nA7 D7(b9'}
+/>
+
+## Akkorddauer
+
+Die Standarddauer eines Akkords ist die ganze Taktart, z.B. 4 Schläge.
+Wenn du möchtest, dass ein Akkord kürzer ist, musst du angeben, wie viele Schläge er gespielt werden soll, indem du Punkte `.` direkt nach dem Symbol schreibst.
+Verwende einen Punkt pro Schlag.
+
+<TabbedChordMark src={'A7.. D7.. E7... A7.'} />
+
+Das obige Beispiel erstellt zwei Takte:
+
+-   der erste Takt hat 2 Akkorde (`A7` und `D7`), die jeweils 2 Schläge dauern
+-   der zweite Takt hat einen Akkord, der 3 Schläge dauert (`E7`) und einen anderen im vierten Schlag (`A7`).
+
+Standardmäßig rendert <CM/> die Dauermarkierungen nur, wenn ein Takt Akkorde mit ungleicher Dauer enthält.
+Wenn alle Akkorde in einem Takt die gleiche Dauer haben, werden die Punkte nicht gerendert.
+
+Achte darauf, dass die Mathematik **pro Takt** korrekt sein muss.
+Wenn die Dauern der Akkorde nicht addieren, wird die Zeile nicht als Akkordzeile betrachtet.
+
+<TabbedChordMark
+	src={
+		'Invalid beat count:\nA7... D7..\nIf a chord spans multiple bar, specify it for each bar:\nA7.. D7.... E7..\nA7.. D7.. D7.. E7..'
+	}
+/>
+
+## Akkorddauer in Unter-Schlägen
+
+Wenn einige Akkorde weniger als einen Schlag dauern, kannst du die Unter-Schlag-Delimiter verwenden, um eine Gruppe von Akkorden zu erstellen, die während des gleichen Schlags gespielt werden.
+
+<TabbedChordMark
+	src={
+		'C.. G..\nWhen I _find myself in _times of trouble\nAm. [Am Am/G] FM7. F6.\n_ Mother _Ma_ry _comes to _me'
+	}
+/>
+
+Innerhalb der Unter-Schlag-Delimiter ist es die Anzahl der Akkorde in den Gruppen, die die Akkorddauer definieren, was bedeutet, dass es nicht notwendig ist, Akkorddauermarkierungen zu verwenden:
+
+<TabbedChordMark
+	src={
+		'8th notes:\nC.. G. [Am Am/G]\n8th notes triplet:\nC.. G. [Am Am/G F]\n16th notes:\nC.. G. [Am Am/G F C]'
+	}
+/>
+
+Eine Unter-Schlag-Gruppendefinition ist ungültig, wenn sie Akkorddauermarkierungen, einen einzelnen Akkord oder mehr als vier Akkorde enthält:
+
+<TabbedChordMark
+	src={'Invalid:\nC.. G. [B. A7.]\nC.. G. [B]\nC.. G. [B C/E Am G F]'}
+/>
+
+## Taktart
+
+Wenn dein Lied nicht in 4/4 ist, kannst du einfach die Taktart in einer separaten Zeile angeben.
+
+<TabbedChordMark src={'3/4\nDm Gm.. C.'} />
+
+Du kannst in einem Lied auch mehrere Taktarten mischen.
+
+<TabbedChordMark
+	src={'3/4\nDm Gm.. C.\n\n4/4\nA7.. D7.. E7... A7.\n\n5/4\nGm... C. Dm7.'}
+/>
+
+Die am häufigsten verwendeten Taktarten werden von <CM/> erkannt.
+
+Es ist möglich, eine Taktartänderung innerhalb einer Akkordzeile zu deklarieren.
+Die neue Taktart wird bis zu einer neuen Deklaration auf derselben Zeile oder bis zum Ende der Zeile dauern.
+
+<TabbedChordMark
+	src={
+		"4/4\n#i\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!\n\n#v\n5/4 A... G.. G... A..\n_Nothing to do to _save his life, _call his wife _in,\n5/4 A... G.. 3/4 G 4/4 A\n_Nothing to say, but, \"_What a day! _How's your boy _been?\"\n5/4 D 4/4 E.. E7..\n_Nothing to do, it's up to _you,\n3/4 A G\nI've got _nothing to say, but _it's okay,\n\n#c\nA.. Dsus2.. A\nGood _morning, good _morning, good _morning, ah!"
+	}
+/>
+
+Wenn eine Taktartänderung vor einer Abschnittsänderung erfolgt, deklariere sie entweder direkt im neuen Abschnitt oder auf der Zeile unmittelbar vor dem Abschnittslabel,
+um zu vermeiden, dass sie bei Verwendung der automatischen Wiederholung von Akkorden für den vorherigen Abschnitt wiederholt wird.
+
+## Wiederholende Takte
+
+Du kannst das `%`-Symbol verwenden, um den zuletzt deklarierten Takt auf der aktuellen Zeile zu wiederholen.
+
+<TabbedChordMark src={'A7 %%%\nD7 % A7 %\nE7 D7 A7 %'} />
+
+Wenn möglich, wird <CM/> wiederholte Takte mit den `%`-Symbolen rendern, auch wenn sie nicht explizit als solche deklariert wurden.
+
+<TabbedChordMark src={'A7.. D7.. %\nD7.. E7. A7. D7.. E7. A7.'} />
+
+## Wiederholende Akkordzeilen
+
+Wenn das `%`-Zeichen alleine auf einer bestimmten Zeile verwendet wird, instruiert es <CM/>, die zuletzt deklarierte Akkordzeile zu wiederholen.
+
+<TabbedChordMark src={'A7 D7\n%'} />
+
+Du kannst zwei Ebenen nach oben gehen und die vorletzte deklarierte Akkordzeile wiederholen, indem du `%%` verwendest
+
+<TabbedChordMark src={'A7 D7\nE7 A7\n%%\n%'} />
+
+## Wiederholende ganze Abschnitte
+
+Bitte überprüfe die Dokumentation zu den Abschnittslabels, um zu erfahren, wie du alle in einem bestimmten Abschnitt definierten Akkorde wiederholen kannst.
+
+## Keine Akkorde
+
+Wenn zu einem bestimmten Zeitpunkt kein Akkord gespielt werden soll, verwende einfach das spezielle `NC`-Symbol
+
+<TabbedChordMark src={'NC Am Dm7'} />
+
+## Normalisierung von Akkordsymbolen
+
+Für mehr Konsistenz normalisiert <CM/> die Akkordsymbole zur Renderzeit.
+
+<TabbedChordMark src={'CMAJ7\nC^\nCM7\nCΔ\nCmajor7'} />
+
+Unter der Haube verwendet <CM/> die leistungsstarke <CS/>-Bibliothek, die in der Lage ist, praktisch jedes Akkordsymbol zu parsen
+und führt die Normalisierung basierend auf [weit verbreiteten Konventionen](https://github.com/no-chris/chord-symbol/tree/master/packages/chord-symbol#background-information) durch.
+
+Diese Normalisierung kann auch, manchmal, den Schreibprozess beschleunigen:
+
+<TabbedChordMark src={'Dm7(b5)\nDh'} />

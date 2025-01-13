@@ -1,0 +1,88 @@
+---
+slug: /
+---
+
+import data from '../../../../docs/getting-started-data.js';
+import { CM, CCS, CS } from '../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../src/components/TabbedChordMark';
+
+
+# Erste Schritte
+
+Willkommen zu <CM/> 5 Minuten Tutorial, wo du die Grundlagen des Formats und seine Möglichkeiten kennenlernen wirst! 
+
+## Beispiel-Lied
+
+Lass uns uns ein Beispiel-Lied ansehen, Hallelujah, von Leonard Cohen. 
+Du kannst zwischen der Quelldatei, die in <CM/> geschrieben wurde, und der gerenderten Version wechseln, indem du die Registerkarten verwendest.
+
+<TabbedChordMark src={data.sampleSong} />
+
+## Zerlegung
+
+Lass uns die Akkordtabelle oben Zeile für Zeile detailieren.
+
+### Erster Vers
+
+<TabbedChordMark src={data.sampleSong} srcLines={'1'} renderLines={'1'} />
+
+Dies ist ein Abschnittslabel, das den Beginn eines Abschnitts definiert: intro, verse, chorus...
+Das `#` ist das Sektionsymbol; und `v` die Kurzschreibweise für das Label `Verse`.
+<CM/> wird die Sektionen automatisch nummerieren, indem sie dasselbe Label verwendet.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'2-3'} renderLines={'2-3'} />
+
+Die erste Zeile enthält zwei Akkordsymbole, gefolgt von je zwei Punkten. Dies bedeutet, dass jeder Akkord für 2 Schläge gespielt werden sollte.
+Da die Standardtaktart `4/4` ist, wird diese Zeile als ein einziger Takt mit 2 Akkorden gerendert. 
+Die Taktstriche `|` werden automatisch hinzugefügt.
+
+Die zweite Zeile enthält den Text, der zusammen mit den Akkorden oben gesungen wird. Das Positionsmarkierungszeichen `_` wird verwendet, um genau anzugeben, wo jeder Akkord gespielt werden sollte.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'4-5'} renderLines={'4-5'} />
+
+Das Symbol `%` instruiert <CM/>, die letzte definierte Akkordzeile zu wiederholen, z.B. Zeile 2.
+
+Obwohl die Akkorde nicht explizit definiert, sondern wiederholt werden, erwartet <CM/> immer noch, dass zwei Akkorde in der Textzeile vorhanden sein sollten. 
+
+<TabbedChordMark src={data.sampleSong} srcLines={'6-7'} renderLines={'6-7'} />
+
+Die erste Zeile deklariert 2 Takte mit je 2 Akkorden.
+Da der erste Takt Akkorde mit ungleichen Dauern hat (3 Schläge für `F`, 1 Schlag für `G`), wird der Schlagzähler `.` explizit gerendert. 
+Er wird weggelassen, wenn jeder Akkord in einem Takt für die gleiche Dauer gespielt werden sollte.
+
+Die zweite Zeile enthält nur 3 Positionsmarker für 4 Akkorde, da der letzte Akkordwechsel nach dem Ende des Textes erfolgt.
+In diesem Fall ist der Positionsmarker optional und <CM/> fügt die extra Akkorde einfach am Ende der Zeile an.
+
+<TabbedChordMark src={data.sampleSong} srcLines={'12-13'} renderLines={'12-13'} />
+
+Wenn keine Dauer für einen Akkord angegeben wird, wie für den `Am` im zweiten Takt hier, dann versteht <CM/>, dass er die ganze Taktart dauern sollte, z.B. 4 Schläge in diesem Fall.
+
+### Erster Chorus
+
+<TabbedChordMark src={data.sampleSong} srcLines={'15-23'} renderLines={'15-23'} />
+
+`#c` deklariert einen neuen Abschnitt, indem die Kurzschreibweise `c` für `chorus` verwendet wird.
+    
+### Zweiter Vers
+
+<TabbedChordMark src={data.sampleSong} srcLines={'25-31'} renderLines={'25-37'} />
+
+Jetzt ist das interessant: indem wir das `#v`-Abschnittslabel ein zweites Mal verwenden, instruieren wir <CM/>, die Akkorde, die für den ersten Vers definiert wurden, automatisch zu wiederholen und auf den aktuellen Abschnitt anzuwenden.
+Das bedeutet, dass nur die Positionsmarker für die Akkorde benötigt werden, und nicht die Akkordsymbole selbst. 
+Das ist ein riesiger Zeitgewinn, wenn du eine Akkordtabelle schreibst!
+
+Beachte, dass <CM/> den zweiten Vers automatisch nummeriert.
+
+### Zweiter Chorus
+
+<TabbedChordMark src={data.sampleSong} srcLines={'33'} renderLines={'39-47'} />
+
+Da der zweite Chorus identisch mit dem ersten ist, können wir einfach das Label deklarieren und den Inhalt des Abschnitts leer lassen: <CM/> wird verstehen, dass es den ganzen Abschnitt automatisch wiederholen sollte.
+
+## Anzeige eines Akkord-Grids
+
+Jetzt sagen wir, du bist ein Bassist in einer Band und dass nur das Akkord-Grid für dich zählt. 
+Einfach! <CM/> kann automatisch ein schön formatiertes Akkord-Grid aus der exakt gleichen Quelldatei rendern:
+
+<TabbedChordMark src={data.sampleSong} options={{chartType: 'chords'}}/>
+

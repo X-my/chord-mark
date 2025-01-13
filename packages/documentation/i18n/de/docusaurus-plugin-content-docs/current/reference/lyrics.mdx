@@ -1,0 +1,59 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Liedtexte schreiben
+
+## Liedzeilen
+
+Jede Zeile, die keine Akkordzeile ist, wird als Liedzeile betrachtet, mit einigen Ausnahmen wie Taktart- oder Abschnittsbezeichnungen.
+
+<TabbedChordMark src={'A line with arbitrary content'} />
+
+Liedzeilen zeigen kein spezielles Verhalten, außer wenn sie Akkordpositionsmarker enthalten.
+
+## Akkordpositionsmarker
+
+Das `_`-Zeichen kann verwendet werden, um anzugeben, wo die Akkorde der unmittelbar vorhergehenden Akkordzeile gespielt werden sollten.
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7\n_A lyric line _with positioned _chords\n\n%\n\n_Another one _without an immediatly preceding _chord line'
+	}
+/>
+
+Wenn die Liedzeile keinen Positionsmarker enthält, werden die Akkorde mit anderen Akkordzeilen ausgerichtet:
+
+<TabbedChordMark
+	src={'A7 E7.. E7+..\nBm7.. E7.. A7\nA lyric line without positioned chords'}
+/>
+
+Wenn die Liedzeile mehr Positionsmarker als Akkorde zu positionieren hat, werden die extraen ignoriert.
+Wenn sie weniger hat, werden die restlichen Akkorde am Ende der Zeile angezeigt:
+
+<TabbedChordMark
+	src={
+		'Bm7.. E7.. A7 Bm7.. E7.. A7\n_A _lyric _line _with _too _many _position _markers\n%\n_Another one _with too few _of them'
+	}
+/>
+
+## Akkorde über mehrere Takte
+
+Dies ist einer der wenigen Fälle, bei denen das Schreiben von Liedern in <CM/> tatsächlich ein bisschen mehr Arbeit erfordert als in anderen Formaten.
+Wenn derselbe Akkord über mehrere Takte gespielt wird, musst du einen Positionsmarker für jeden dieser Takte hinzufügen.
+Diese (minimale) extra Arbeit resultiert in einer viel besseren Klarheit bei der Platzierung von Liedtexten, obwohl.
+
+<TabbedChordMark
+	src={"A7 %%\nYou don't have to be _beautiful _ to turn me _on "}
+/>
+
+## Erzwungene Liedzeilen
+
+Es gibt einige - seltene - Fälle, bei denen <CM/> möglicherweise eine Liedzeile als Akkordzeile interpretiert.
+Wenn dies passiert, kannst du eine Zeile erzwingen, als Liedzeile erkannt zu werden, indem du das `:`-Symbol am Anfang hinzufügst.
+
+<TabbedChordMark src={'Ah Ah Ah\n:Ah Ah Ah\nFish\n:Fish'} />
+
+Hinweis, dass du auch ein anderes Zeichen an den Anfang der Zeile hinzufügen kannst, um die Liedzeilenerkennung zu erzwingen.
+Der einzige Unterschied ist, dass das `:`-Symbol bei der Darstellung verborgen wird.
+
+<TabbedChordMark src={'Ah\nAh!\n:Ah'} />

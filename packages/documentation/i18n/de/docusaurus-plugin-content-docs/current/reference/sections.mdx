@@ -1,0 +1,69 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+import data from '../../../../../docs/reference/sections-data';
+
+# Abschnitte
+
+Abschnitte sind das Herzstück einiger der leistungsfähigsten Funktionen von <CM/>, wie die automatische Wiederholung von Akkorden über Abschnitte desselben Typs.
+Sie können sie als unabhängige Teile eines Liedes wie Intro, Verse, Chorus, Solo... betrachten.
+
+Angesichts der Vorteile, die sie bringen, wird dringend empfohlen, Abschnittsbezeichnungen systematisch zu verwenden.
+
+## Deklaration eines Abschnitts
+
+Um einen neuen Abschnitt zu erstellen, verwenden Sie das `#`-Zeichen gefolgt von einem einzigen Wort:
+
+<TabbedChordMark src={'#intro\n#verse\n#bridge\n#chorus\n#verse\n#chorus'} />
+
+Beachten Sie, dass Sie multiple Abschnitte derselben Familie mit der exakt gleichen Abschnittsbezeichnung deklarieren sollten (z.B. `#verse`, `#chorus`...). <CM/> wird automatisch die Nummerierung durchführen.
+
+Die Abschnittsbezeichnung sollte ein einziges Wort sein, das nur aus Buchstaben besteht, groß oder klein geschrieben. 
+Wenn ein anderes Zeichen vorhanden ist, wie ein Leerzeichen, dann wird die Zeile als Textzeile betrachtet und kein Abschnitt wird deklariert.
+
+<TabbedChordMark src={'Valid labels:\n#custom\n#mySection\n\nInvalid labels:\n#my section\n#1custom\n#custom 2'} />
+
+Um einen Abschnitt zu beenden, deklarieren Sie einfach einen neuen, oder beenden Sie die Datei:
+
+<TabbedChordMark src={'#verse\nThis is the verse \n\n#chorus\nThis is the chorus'} />
+
+## Kurzschreibweise
+
+Um den Schreibprozess zu beschleunigen, hat <CM/> eine Kurzschreibweise für die am häufigsten verwendeten Abschnittsnamen. 
+Hier ist die Liste aller verfügbaren Abkürzungen. Es wird dringend empfohlen, diese zu verwenden:
+
+<TabbedChordMark src={'#a\n#b\n#c\n#i\n#o\n#p\n#s\n#u\n#v'} />
+
+## Wiederholung von Akkorden
+
+Jetzt kommen die interessanten Teile.
+Sobald Sie die Akkorde für einen Abschnitt spezifiziert haben, werden sie automatisch für die folgenden Abschnitte mit der exakt gleichen Bezeichnung wiederholt.
+Selbst wenn die Akkordzeilen nicht mehr vorhanden sind, können die Akkordpositionsmarker genau wie definiert werden, als wenn die Akkorde explizit oben geschrieben worden wären.
+
+<TabbedChordMark src={data.repeat1} />
+
+Wenn die Akkorde in einem wiederholten Abschnitt leicht abweichen, überschreiben Sie sie einfach mit einer neuen Akkordzeile!
+Überschreibungen werden nur auf den derzeit wiederholten Abschnitt angewendet:
+
+<TabbedChordMark src={data.repeat2} />
+
+## Wiederholung eines ganzen Abschnitts
+
+Wenn ein Abschnitt mit identischen Akkorden und Texten wiederholt werden soll, schreiben Sie einfach die Bezeichnung und lassen Sie den Abschnittsbody leer. 
+
+<TabbedChordMark src={data.repeat3} />
+
+Standardmäßig wird der erste deklarierte Abschnitt mit dieser Bezeichnung wiederholt. Sie können auch einen bestimmten Abschnitt anvisieren, indem Sie seinem Index an die Bezeichnung anfügen:
+
+<TabbedChordMark src={data.repeat4} />
+
+## Multiplikation eines Abschnitts
+
+Wenn ein Abschnitt mehrmals in Folge gespielt werden soll, multiplizieren Sie ihn einfach:
+
+<TabbedChordMark src={'#c x2\nE7 D7\nA chorus played twice in a row'} options={{ expandSectionMultiply: false }} />
+
+Wenn der <CM/>-Renderer mit dem Parameter `expandSectionMultiply: true` aufgerufen wird, werden die multiplizierten Abschnitte explizit wiederholt.
+
+<TabbedChordMark src={'#c x2\nE7 D7\nA chorus played twice in a row\n'} options={{ expandSectionMultiply: true }} />
+
+Dies funktioniert auch für wiederholte Abschnitte.

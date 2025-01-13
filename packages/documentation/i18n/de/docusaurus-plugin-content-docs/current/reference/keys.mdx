@@ -1,0 +1,91 @@
+import { CM, CCS, CS } from '../../../../../src/components/shortcuts';
+import TabbedChordMark from '../../../../../src/components/TabbedChordMark';
+
+# Schlüsseldeklaration
+
+## Schlüsseldeklarationszeilen
+
+Es ist möglich, den Schlüssel eines beliebigen Teils des Liedes mithilfe des Schlüsselworts zu deklarieren:
+
+<TabbedChordMark src={'key C\nC F G C'} />
+
+Wenn ein Schlüsselwechsel vor einem Sektionswechsel auftritt, sollte er direkt im neuen Abschnitt oder auf der Zeile unmittelbar vor dem Sektionslabel deklariert werden,
+um zu vermeiden, dass er für den vorherigen Abschnitt wiederholt wird, wenn die automatische Wiederholung von Akkorden über Abschnitte hinweg verwendet wird.
+
+Außer dass sie Klarheit für den Leser der Akkordtabelle bringt, was immer ein gutes Ding ist, bringt die Deklaration eines oder mehrerer Schlüssel mindestens 3 Vorteile.
+
+### 1/ Automatische Transposition
+
+Der erste Vorteil ist - meiner Meinung nach - eines der coolsten Features von <CM />!
+Jedes Mal, wenn während eines Liedes ein Schlüsselwechsel auftritt, und wenn die automatische Wiederholung von Akkorden über Abschnitte hinweg verwendet wird, wird <CM /> die wiederholten Akkorde basierend auf der neuen Schlüsseldeklaration automatisch transponieren.
+Sehen Sie sich das Beispiel unten an:
+
+<TabbedChordMark
+	src={
+		'key C\n#v\nDm7 G7 C %\nThe first verse is in the key of C\n\nkey G\n#v\nAnd the second one in the key of G!'
+	}
+/>
+
+Der Basis-Schlüssel, von dem die Transposition ausgeht, ist immer der erste, der explizit deklariert wurde, also stellen Sie sicher, dass Sie immer einen Schlüssel vor der ersten Akkordzeile definieren.
+
+### 2/ Korrekte Darstellung von Vorzeichen
+
+Der zweite Vorteil bezieht sich auf die Darstellung von Akkord-Vorzeichen (`#` und `b`).
+Wenn Ihre Quelldatei gemischte Vorzeichen enthält, ermöglicht die Deklaration eines Schlüssels <CM/> die automatische Normalisierung der Vorzeichen, indem sie das passende Symbol wählt
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _'
+	}
+/>
+
+Beachten Sie, dass wenn Sie keinen Schlüssel deklarieren, <CM/> versuchen wird, ihn basierend auf den im Lied verwendeten Akkorden automatisch zu erkennen.
+Während dies für einfache Lieder wahrscheinlich gut funktionieren sollte, wird es wahrscheinlich bei komplexeren Fällen versagen.
+Also ist es als Best Practice empfohlen, immer einen Schlüssel explizit zu deklarieren.
+
+Vorzeichen werden auch ordnungsgemäß gewählt, wenn das Lied mehrere Schlüssel enthält:
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+/>
+
+Wenn Sie im Vorzeichen-`auto`-Modus transponieren, versucht <CM/> intelligent zu sein und theoretische Schlüssel zu vermeiden, die in der Praxis nicht verwendet werden.
+Beispielsweise würde das Transponieren von `Layla` um 1 Halbton nach unten zu einem Schlüssel von `C#m` anstatt `Dbm` für den Chorus führen. Beachten Sie, dass die passenden Vorzeichen für jeden Schlüssel verwendet werden.
+
+<TabbedChordMark
+	src={
+		'#v\nkey C#m\nC#m7 Ab7\n_ What will you do when you get _lonely?\nC#m7.. C. D. E.. E7..\n_ No one _waiting _by your _side _\n\n#c\nkey Dm\nDm.. Bb..\nLayla_\nC.. Dm.. Dm.. A#..\n_Got me on my _knees, Layla'
+	}
+	options={{ transposeValue: -1 }}
+/>
+
+### 3/ Harmonische Analyse
+
+Der dritte Vorteil der Verwendung von Schlüsseln liegt in <CM/>'s Fähigkeit, bei der harmonischen Analyse zu helfen, indem sie die Akkordsymbole als [römische Zahlenzeichen](https://de.wikipedia.org/wiki/Römische_Zahlenanalyse) darstellt.
+Dies kann nur getan werden, wenn ein Schlüssel explizit gesetzt wurde, ansonsten werden alle Symbole als `I`, `i` oder `?` dargestellt.
+Der Ansatz, Akkorde von Noten zu Zahlenzeichen zu konvertieren, ist sehr einfach und naiv: basierend auf dem deklarierten Schlüssel wird <CM/> einfach erkennen, ob die Akkorde des Liedes diatonisch zum Schlüssel sind,
+oder diatonisch zum parallelen Dur- oder Moll-Schlüssel (z.B. "entliehene" Akkorde).
+Natürlich gibt es viel mehr zur harmonischen Analyse als diesen einfachen Ansatz, und ich hoffe, <CM/>'s Fähigkeiten in Zukunft mit mehr Funktionalität zu erweitern.
+
+<TabbedChordMark
+	src={
+		'key Em\n6/8\nEm D. C.\n_ Forever trusting _who we are\nG.  B7. Em %\n_ and _nothing else _matters'
+	}
+	options={{ symbolType: 'roman' }}
+/>
+
+Bitte beachten Sie, dass:
+
+-   Symbole, die diatonisch zum Schlüssel sind, werden mit Hintergrundfarbe dargestellt
+-   entliehene Akkorde werden mit einem leicht dunkleren Hintergrund dargestellt
+-   unbekannte Akkorde werden ohne Hintergrundfarbe dargestellt
+
+<TabbedChordMark
+	src={'key C\nC/E Dm7/F Fm Gm Ab7'}
+	options={{ symbolType: 'roman' }}
+/>
+
+Wenn Sie unsicher sind, welcher Schlüssel ist, probieren Sie einfach einige Kandidaten aus! Sie werden sofort sehen, ob das Lied viele diatonische Akkorde für diesen Schlüssel hat.
+Und wenn es das tut, dann könnte der gegebene Schlüssel ein guter Kandidat sein.

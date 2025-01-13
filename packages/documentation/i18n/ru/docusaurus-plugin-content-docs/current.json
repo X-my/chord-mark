@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Следующая",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Reference": {
+    "message": "Ссылка",
+    "description": "The label for category Reference in sidebar docs"
+  },
+  "sidebar.docs.doc.Getting started": {
+    "message": "Начало работы",
+    "description": "The label for the doc item Getting started in sidebar docs, linking to the doc getting-started"
+  }
+}
